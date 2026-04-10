@@ -24,6 +24,7 @@ function ensureFirebaseInit(){
       firebase.initializeApp(FIREBASE_CONFIG);
     }
   }catch(e){}
+  return Promise.resolve();
 }
 
 /* ============================================================================
@@ -4722,7 +4723,7 @@ function startAIGame() {
   renderChips();
   renderBetZones();
   playSound('click');
-  startBGMusic();
+  stopBGMusic();
 }
 
 function placeBet(type) {
@@ -5224,7 +5225,7 @@ function renderShop(tab) {
 
     let html = '<div style="font-size:48px;margin-bottom:8px">' + item.emoji + '</div>';
     html += '<div style="color:#e2e8f0;font-weight:bold;margin-bottom:4px">' + item.name + '</div>';
-    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:12px">' + item.desc + '</div>';
+    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:12px">' + (item.desc || item.name) + '</div>';
 
     if (!owned && item.price) {
       html += '<button data-action="buy-item" data-shop-tab="' + tab + '" data-item-id="' + item.id + '" style="background:#d4af37;color:#0f0a2a;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:bold;width:100%">' + formatNumber(item.price) + ' ⭐</button>';
@@ -6617,8 +6618,8 @@ function setupListeners() {
         if (exitPopup) exitPopup.style.display = 'flex';
       } else {
         playSound('click');
-        stopBGMusic();
         showScreen('home');
+        startBGMusic();
       }
       return;
     }
@@ -6630,9 +6631,9 @@ function setupListeners() {
       gameState.inProgress = false;
       onlineState.roomCode = null;
       onlineState.isHost = false;
-      stopBGMusic();
       playSound('click');
       showScreen('home');
+      startBGMusic();
       return;
     }
 
@@ -6721,6 +6722,7 @@ function init() {
   resetDailyMissions();
   checkBankrupt();
   showScreen('home');
+  startBGMusic();
 
   try {
     ensureFirebaseInit().then(function() {
