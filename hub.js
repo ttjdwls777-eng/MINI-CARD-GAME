@@ -6482,6 +6482,11 @@ function init() {
   }
 }
 
-init();
+// Wait for DOM ready (same pattern as hub.js)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 
 })();
