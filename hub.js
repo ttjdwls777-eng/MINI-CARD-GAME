@@ -6481,3 +6481,7 @@ function init() {
     console.error('init error:', e);
   }
 }
+
+init();
+
+})();
