@@ -3765,28 +3765,28 @@ function boot() {
           
           <div class="setting-item">
             <div class="setting-label" data-i18n="sound">Sound</div>
-            <div class="toggle-switch" id="toggle-sound" data-setting="sound">
+            <div class="toggle-switch" id="toggle-sound" data-action="toggle-sound">
               <div class="toggle-slider"></div>
             </div>
           </div>
-          
+
           <div class="setting-item">
             <div class="setting-label" data-i18n="vibration">Vibration</div>
-            <div class="toggle-switch" id="toggle-vibrate" data-setting="vibrate">
+            <div class="toggle-switch" id="toggle-vibrate" data-action="toggle-vibrate">
               <div class="toggle-slider"></div>
             </div>
           </div>
-          
+
           <div class="setting-item">
             <div class="setting-label" data-i18n="notifications">Notifications</div>
-            <div class="toggle-switch" id="toggle-notif" data-setting="notif">
+            <div class="toggle-switch" id="toggle-notif" data-action="toggle-notif">
               <div class="toggle-slider"></div>
             </div>
           </div>
-          
+
           <div class="setting-item">
             <div class="setting-label" data-i18n="auto_deal">Auto Deal</div>
-            <div class="toggle-switch" id="toggle-autodeal" data-setting="autodeal">
+            <div class="toggle-switch" id="toggle-autodeal" data-action="toggle-autodeal">
               <div class="toggle-slider"></div>
             </div>
           </div>
@@ -4130,6 +4130,7 @@ function loadSettings() {
       vibration: true,
       notifications: true,
       autodeal: false,
+      bgMusic: true,
       language: 'en',
       theme: 'dark',
       speed: 'normal'
@@ -4255,6 +4256,42 @@ function applyTheme() {
       '--danger': '#dc2626',
       '--card-bg': '#3d1515',
       '--border': '#522020'
+    },
+    light: {
+      '--bg-primary': '#f5f0e8',
+      '--bg-secondary': '#ece5d8',
+      '--bg-tertiary': '#ddd5c5',
+      '--text-primary': '#1a1a2e',
+      '--text-secondary': '#4a4a6a',
+      '--accent': '#b8860b',
+      '--success': '#10b981',
+      '--danger': '#dc2626',
+      '--card-bg': '#ece5d8',
+      '--border': '#c8bfa8'
+    },
+    classic: {
+      '--bg-primary': '#0d3320',
+      '--bg-secondary': '#1a4a30',
+      '--bg-tertiary': '#245a3c',
+      '--text-primary': '#f0ead6',
+      '--text-secondary': '#a8c8a8',
+      '--accent': '#d4af37',
+      '--success': '#4ade80',
+      '--danger': '#f87171',
+      '--card-bg': '#1a4a30',
+      '--border': '#2a6a4a'
+    },
+    modern: {
+      '--bg-primary': '#121218',
+      '--bg-secondary': '#1c1c28',
+      '--bg-tertiary': '#2a2a3a',
+      '--text-primary': '#e8e8f0',
+      '--text-secondary': '#8888a8',
+      '--accent': '#6366f1',
+      '--success': '#22d3ee',
+      '--danger': '#f43f5e',
+      '--card-bg': '#1c1c28',
+      '--border': '#3a3a52'
     }
   };
   const colors = themes[theme] || themes.dark;
@@ -4469,6 +4506,7 @@ function toggleBGMusic() {
     settings.bgMusic = true;
   }
   saveSettings();
+  renderSettingsState();
 }
 
 // ============================================================================
@@ -5954,15 +5992,43 @@ function changeSpeed(newSpeed) {
 }
 
 function renderSettingsState() {
-  const soundBtn = document.querySelector('[data-action="toggle-sound"]');
-  const vibBtn = document.querySelector('[data-action="toggle-vibrate"]');
-  const notifBtn = document.querySelector('[data-action="toggle-notif"]');
-  const autodealBtn = document.querySelector('[data-action="toggle-autodeal"]');
+  var toggles = [
+    { id: 'toggle-sound', key: 'sound' },
+    { id: 'toggle-vibrate', key: 'vibration' },
+    { id: 'toggle-notif', key: 'notifications' },
+    { id: 'toggle-autodeal', key: 'autodeal' },
+    { id: 'toggle-bgmusic', key: 'bgMusic' }
+  ];
+  toggles.forEach(function(item) {
+    var el = document.getElementById(item.id);
+    if (!el) return;
+    var isOn = !!settings[item.key];
+    if (item.key === 'bgMusic') isOn = !!bgMusic;
+    if (isOn) {
+      el.classList.add('active');
+    } else {
+      el.classList.remove('active');
+    }
+  });
 
-  if (soundBtn) soundBtn.style.opacity = settings.sound ? '1' : '0.5';
-  if (vibBtn) vibBtn.style.opacity = settings.vibration ? '1' : '0.5';
-  if (notifBtn) notifBtn.style.opacity = settings.notifications ? '1' : '0.5';
-  if (autodealBtn) autodealBtn.style.opacity = settings.autodeal ? '1' : '0.5';
+  // Theme buttons
+  var themeBtns = document.querySelectorAll('[data-theme]');
+  themeBtns.forEach(function(btn) {
+    var th = btn.getAttribute('data-theme');
+    if (th === (settings.theme || 'dark')) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  // Language select
+  var langSel = document.getElementById('lang-select');
+  if (langSel) langSel.value = settings.language || lang || 'en';
+
+  // Speed select
+  var speedSel = document.getElementById('speed-select');
+  if (speedSel) speedSel.value = settings.speed || 'normal';
 }
 
 // ============================================================================
@@ -6109,10 +6175,10 @@ function cleanupStaleRooms() {
     var roomsRef = firebase.database().ref('baccaratRooms');
     roomsRef.once('value').then(function(snap) {
       var now = Date.now();
-      var oneHour = 60 * 60 * 1000;
+      var tenMin = 10 * 60 * 1000;
       snap.forEach(function(child) {
         var room = child.val();
-        if (room && room.createdAt && (now - room.createdAt > oneHour)) {
+        if (room && room.createdAt && (now - room.createdAt > tenMin)) {
           child.ref.remove();
         }
       });
@@ -6186,6 +6252,8 @@ const Online = {
       players: {},
       createdAt: firebase.database.ServerValue.TIMESTAMP
     }).then(function() {
+      // Auto-delete room if host disconnects
+      roomRef.onDisconnect().remove();
       return code;
     }).catch(function() {
       return null;
@@ -6282,7 +6350,7 @@ function setupListeners() {
   if (!root) return;
 
   root.addEventListener('click', function(e) {
-    const target = e.target.closest('[data-action], [data-nav], [data-back], [data-chip], [data-shop-tab], [data-rank-tab], [data-item-id], [data-mission-id]');
+    const target = e.target.closest('[data-action], [data-nav], [data-back], [data-chip], [data-shop-tab], [data-rank-tab], [data-item-id], [data-mission-id], [data-theme]');
     if (!target) return;
 
     const action = target.getAttribute('data-action');
@@ -6291,6 +6359,7 @@ function setupListeners() {
     const chip = target.getAttribute('data-chip');
     const shopTab = target.getAttribute('data-shop-tab');
     const rankTab = target.getAttribute('data-rank-tab');
+    const themeAttr = target.getAttribute('data-theme');
 
     if (nav) {
       playSound('click');
@@ -6349,6 +6418,13 @@ function setupListeners() {
       fetchRanking(rankTab).then(function(players) {
         renderRankingList(rankTab, players);
       });
+      return;
+    }
+
+    if (themeAttr) {
+      playSound('click');
+      changeTheme(themeAttr);
+      renderSettingsState();
       return;
     }
 
@@ -6669,6 +6745,18 @@ function setupListeners() {
     if (action === 'confirm-room-exit') {
       var exitPopup2 = document.getElementById('room-exit-popup');
       if (exitPopup2) exitPopup2.style.display = 'none';
+      // Leave/delete room from Firebase
+      var exitCode = onlineState.roomCode;
+      var wasHost = onlineState.isHost;
+      if (exitCode && firebaseOK()) {
+        if (wasHost) {
+          // Host leaves → delete the room entirely
+          firebase.database().ref('baccaratRooms/' + exitCode).remove().catch(function(){});
+        } else {
+          // Player leaves → just remove self from players
+          Online.leaveRoom(exitCode).catch(function(){});
+        }
+      }
       gameState.mode = null;
       gameState.inProgress = false;
       onlineState.roomCode = null;
@@ -6689,11 +6777,22 @@ function setupListeners() {
     if (action === 'join-room') {
       var roomCode = target.getAttribute('data-room-code');
       if (roomCode) {
+        showToast(t('joining') || 'Joining...', 1500);
         Online.joinRoom(roomCode).then(function() {
           showToast(t('joined_room'), 2000);
           hideOverlay('room-panel');
-        }).catch(function() {
-          showToast(t('join_failed'), 2000);
+          // Actually enter the game screen
+          onlineState.roomCode = roomCode;
+          onlineState.isHost = false;
+          gameState.mode = 'online';
+          gameState.selectedChip = CHIPS[0];
+          showScreen('game');
+          stopBGMusic();
+          renderGameTable();
+          renderChips();
+          renderBetZones();
+        }).catch(function(err) {
+          showToast(t('join_failed') || 'Join failed', 2000);
         });
       }
       return;
@@ -7124,9 +7223,16 @@ function cleanShutdown() {
   saveShopData();
   saveDailyMission();
   saveHistory();
-  
+
   if (firebaseOK()) {
     try {
+      // If host, delete the room on shutdown
+      if (onlineState.roomCode && onlineState.isHost) {
+        firebase.database().ref('baccaratRooms/' + onlineState.roomCode).remove();
+      } else if (onlineState.roomCode) {
+        // If player, remove self from room
+        firebase.database().ref('baccaratRooms/' + onlineState.roomCode + '/players/' + profile.userId).remove();
+      }
       Online.goOffline();
     } catch (e) {}
   }
