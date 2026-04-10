@@ -1980,31 +1980,30 @@
     panel.classList.add('show');
   }
 
-  document.getElementById('room-panel-close').addEventListener('click', () => {
-    document.getElementById('room-panel').classList.remove('show');
-  });
+  function setupSettingsListeners() {
+    document.getElementById('room-panel-close').addEventListener('click', () => {
+      document.getElementById('room-panel').classList.remove('show');
+    });
 
-  /* ═════════════════════════════════════════════════════════════════════════
-     SETTINGS UI
-     ═════════════════════════════════════════════════════════════════════════ */
-  document.getElementById('toggle-sound').addEventListener('click', () => {
-    settings.sound = !settings.sound;
-    document.getElementById('toggle-sound').classList.toggle('on');
-    saveSettings();
-  });
+    document.getElementById('toggle-sound').addEventListener('click', () => {
+      settings.sound = !settings.sound;
+      document.getElementById('toggle-sound').classList.toggle('on');
+      saveSettings();
+    });
 
-  document.getElementById('toggle-vibrate').addEventListener('click', () => {
-    settings.vibrate = !settings.vibrate;
-    document.getElementById('toggle-vibrate').classList.toggle('on');
-    saveSettings();
-  });
+    document.getElementById('toggle-vibrate').addEventListener('click', () => {
+      settings.vibrate = !settings.vibrate;
+      document.getElementById('toggle-vibrate').classList.toggle('on');
+      saveSettings();
+    });
 
-  document.getElementById('lang-select').addEventListener('change', (e) => {
-    lang = e.target.value;
-    settings.language = lang;
-    saveSettings();
-    applyI18n();
-  });
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      lang = e.target.value;
+      settings.language = lang;
+      saveSettings();
+      applyI18n();
+    });
+  }
 
   /* ═════════════════════════════════════════════════════════════════════════
      CHIP SELECTOR
@@ -2026,47 +2025,6 @@
         vibrate(20);
       });
     });
-  }
-
-  /* ═════════════════════════════════════════════════════════════════════════
-     INIT & BOOTSTRAP
-     ═════════════════════════════════════════════════════════════════════════ */
-  function init() {
-    boot();
-    lang = settings.language || 'en';
-    applyI18n();
-    renderChips();
-    game.shoe = createShoe(8);
-    game.lastResults = JSON.parse(localStorage.getItem('baccarat_results') || '[]');
-
-    updateAllUI();
-
-    const now = Date.now();
-    if (now - profile.lastDailyClaimTime > 86400000) {
-      document.getElementById('daily-card').classList.remove('hidden');
-    }
-
-    document.getElementById('toggle-sound').classList.toggle('on', settings.sound);
-    document.getElementById('toggle-vibrate').classList.toggle('on', settings.vibrate);
-    document.getElementById('lang-select').value = lang;
-
-    document.addEventListener('pointerdown', () => {
-      if (settings.sound) {
-        try {
-          const ac = new (window.AudioContext || window.webkitAudioContext)();
-          const now = ac.currentTime;
-          const osc = ac.createOscillator();
-          const gain = ac.createGain();
-          osc.connect(gain);
-          gain.connect(ac.destination);
-          osc.frequency.value = 600;
-          gain.gain.setValueAtTime(0.05, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-          osc.start(now);
-          osc.stop(now + 0.05);
-        } catch {}
-      }
-    }, { once: false });
   }
 
   /* ═════════════════════════════════════════════════════════════════════════
@@ -2473,52 +2431,7 @@
     });
   }
 
-  function init() {
-    boot();
-    lang = settings.language || 'en';
-    applyI18n();
-    renderChips();
-    game.shoe = createShoe(8);
-    game.lastResults = JSON.parse(localStorage.getItem('baccarat_results') || '[]');
-
-    initializeAdvancedFeatures();
-    updateAllUI();
-
-    const now = Date.now();
-    if (now - profile.lastDailyClaimTime > 86400000) {
-      document.getElementById('daily-card').classList.remove('hidden');
-    }
-
-    document.getElementById('toggle-sound').classList.toggle('on', settings.sound);
-    document.getElementById('toggle-vibrate').classList.toggle('on', settings.vibrate);
-    document.getElementById('lang-select').value = lang;
-
-    document.addEventListener('pointerdown', () => {
-      if (settings.sound) {
-        try {
-          const ac = new (window.AudioContext || window.webkitAudioContext)();
-          const now = ac.currentTime;
-          const osc = ac.createOscillator();
-          const gain = ac.createGain();
-          osc.connect(gain);
-          gain.connect(ac.destination);
-          osc.frequency.value = 600;
-          gain.gain.setValueAtTime(0.05, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-          osc.start(now);
-          osc.stop(now + 0.05);
-        } catch {}
-      }
-    }, { once: false });
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        logGameEvent('session_paused', { duration: Date.now() - sessionStartTime });
-      } else {
-        logGameEvent('session_resumed');
-      }
-    });
-  }
+  /* [duplicate init removed] */
 
   /* ═════════════════════════════════════════════════════════════════════════
      COMPREHENSIVE TUTORIAL & GUIDE SYSTEM
@@ -2813,64 +2726,7 @@
     localStorage.setItem('baccarat_playtime_reminder', minutesPerSession);
   }
 
-  /* ═════════════════════════════════════════════════════════════════════════
-     FINAL INITIALIZATION
-     ═════════════════════════════════════════════════════════════════════════ */
-  function init() {
-    boot();
-    lang = settings.language || 'en';
-    applyI18n();
-    renderChips();
-    game.shoe = createShoe(8);
-    game.lastResults = JSON.parse(localStorage.getItem('baccarat_results') || '[]');
-
-    initializeAdvancedFeatures();
-    updateAllUI();
-    checkForActiveEvents();
-
-    const now = Date.now();
-    if (now - profile.lastDailyClaimTime > 86400000) {
-      document.getElementById('daily-card').classList.remove('hidden');
-    }
-
-    document.getElementById('toggle-sound').classList.toggle('on', settings.sound);
-    document.getElementById('toggle-vibrate').classList.toggle('on', settings.vibrate);
-    document.getElementById('lang-select').value = lang;
-
-    document.addEventListener('pointerdown', () => {
-      if (settings.sound) {
-        try {
-          const ac = new (window.AudioContext || window.webkitAudioContext)();
-          const now = ac.currentTime;
-          const osc = ac.createOscillator();
-          const gain = ac.createGain();
-          osc.connect(gain);
-          gain.connect(ac.destination);
-          osc.frequency.value = 600;
-          gain.gain.setValueAtTime(0.05, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-          osc.start(now);
-          osc.stop(now + 0.05);
-        } catch {}
-      }
-    }, { once: false });
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        logGameEvent('session_paused', { duration: Date.now() - sessionStartTime });
-      } else {
-        logGameEvent('session_resumed');
-      }
-    });
-
-    window.addEventListener('beforeunload', () => {
-      finishSession();
-      logGameEvent('session_ended', {
-        finalStars: profile.stars,
-        sessionDuration: Date.now() - sessionStartTime,
-      });
-    });
-  }
+  /* [duplicate init removed] */
 
   /* ═════════════════════════════════════════════════════════════════════════
      MATHEMATICAL ANALYSIS & GAME THEORY
@@ -3193,82 +3049,7 @@
     }
   }
 
-  /* ═════════════════════════════════════════════════════════════════════════
-     GAME INITIALIZATION WITH COMPREHENSIVE CHECKS
-     ═════════════════════════════════════════════════════════════════════════ */
-
-  function init() {
-    boot();
-
-    const health = performHealthCheck();
-    if (!health.healthy) {
-      resetCorruptedState();
-      console.warn('Game state was corrupted, reset to default');
-    }
-
-    lang = settings.language || 'en';
-    applyI18n();
-    renderChips();
-    game.shoe = createShoe(8);
-    game.lastResults = JSON.parse(localStorage.getItem('baccarat_results') || '[]');
-
-    initializeAdvancedFeatures();
-    updateAllUI();
-    checkForActiveEvents();
-    saveGameSnapshot();
-
-    const now = Date.now();
-    if (now - profile.lastDailyClaimTime > 86400000) {
-      document.getElementById('daily-card').classList.remove('hidden');
-    }
-
-    document.getElementById('toggle-sound').classList.toggle('on', settings.sound);
-    document.getElementById('toggle-vibrate').classList.toggle('on', settings.vibrate);
-    document.getElementById('lang-select').value = lang;
-
-    document.addEventListener('pointerdown', () => {
-      if (settings.sound) {
-        try {
-          const ac = new (window.AudioContext || window.webkitAudioContext)();
-          const now = ac.currentTime;
-          const osc = ac.createOscillator();
-          const gain = ac.createGain();
-          osc.connect(gain);
-          gain.connect(ac.destination);
-          osc.frequency.value = 600;
-          gain.gain.setValueAtTime(0.05, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-          osc.start(now);
-          osc.stop(now + 0.05);
-        } catch {}
-      }
-    }, { once: false });
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        logGameEvent('session_paused', { duration: Date.now() - sessionStartTime });
-        saveGameSnapshot();
-      } else {
-        logGameEvent('session_resumed');
-      }
-    });
-
-    window.addEventListener('beforeunload', () => {
-      finishSession();
-      saveGameSnapshot();
-      logGameEvent('session_ended', {
-        finalStars: profile.stars,
-        sessionDuration: Date.now() - sessionStartTime,
-      });
-    });
-
-    setInterval(() => {
-      saveGameSnapshot();
-      if (sessionGameCount > 20) {
-        finishSession();
-      }
-    }, 300000);
-  }
+  /* [duplicate init removed] */
 
   /* ═════════════════════════════════════════════════════════════════════════
      ADVANCED STATISTICS & REPORTING MODULE
@@ -3562,13 +3343,7 @@
 
   function init() {
     boot();
-
-    const health = performHealthCheck();
-    if (!health.healthy) {
-      resetCorruptedState();
-      createBackup();
-      console.warn('Game state was corrupted, created backup');
-    }
+    setupSettingsListeners();
 
     lang = settings.language || 'en';
     applyI18n();
@@ -3576,15 +3351,8 @@
     game.shoe = createShoe(8);
     game.lastResults = JSON.parse(localStorage.getItem('baccarat_results') || '[]');
 
-    const anomalies = detectAnomalies();
-    if (anomalies.length > 0) {
-      logGameEvent('anomalies_detected', { count: anomalies.length, anomalies });
-    }
-
     initializeAdvancedFeatures();
     updateAllUI();
-    checkForActiveEvents();
-    createBackup();
 
     const now = Date.now();
     if (now - profile.lastDailyClaimTime > 86400000) {
@@ -3599,16 +3367,16 @@
       if (settings.sound) {
         try {
           const ac = new (window.AudioContext || window.webkitAudioContext)();
-          const now = ac.currentTime;
+          const t = ac.currentTime;
           const osc = ac.createOscillator();
           const gain = ac.createGain();
           osc.connect(gain);
           gain.connect(ac.destination);
           osc.frequency.value = 600;
-          gain.gain.setValueAtTime(0.05, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-          osc.start(now);
-          osc.stop(now + 0.05);
+          gain.gain.setValueAtTime(0.05, t);
+          gain.gain.exponentialRampToValueAtTime(0.01, t + 0.05);
+          osc.start(t);
+          osc.stop(t + 0.05);
         } catch {}
       }
     }, { once: false });
@@ -3616,8 +3384,6 @@
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         logGameEvent('session_paused', { duration: Date.now() - sessionStartTime });
-        saveGameSnapshot();
-        createBackup();
       } else {
         logGameEvent('session_resumed');
       }
@@ -3625,31 +3391,11 @@
 
     window.addEventListener('beforeunload', () => {
       finishSession();
-      saveGameSnapshot();
-      createBackup();
       logGameEvent('session_ended', {
         finalStars: profile.stars,
         sessionDuration: Date.now() - sessionStartTime,
       });
     });
-
-    setInterval(() => {
-      saveGameSnapshot();
-      if (sessionGameCount > 20) {
-        finishSession();
-      }
-      if (sessionGameCount % 50 === 0) {
-        createBackup();
-      }
-    }, 300000);
-
-    setInterval(() => {
-      const integrity = validateGameIntegrity();
-      if (!integrity.valid) {
-        repairGameState();
-        logGameEvent('state_repaired', { issues: integrity.validations });
-      }
-    }, 600000);
 
     logGameEvent('game_initialized', {
       profileLevel: levelFromXp(profile.xp).lv,
