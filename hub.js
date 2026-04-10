@@ -5725,31 +5725,7 @@ function setupTutorialHandlers() {
 }
 
 // SECTION 7C: ENHANCED SETTINGS SYSTEM
-let appSettings = {
-  animationSpeed: 'normal', // slow, normal, fast
-  autoDeal: false,
-  cardStyle: 'classic', // classic, modern, minimal
-  theme: 'dark', // dark, midnight, deep-purple
-  notificationEnabled: true,
-  soundEnabled: true,
-  vibrationEnabled: true
-};
-
-function loadSettings() {
-  try {
-    const stored = localStorage.getItem('bac_settings');
-    if (stored) {
-      appSettings = { ...appSettings, ...JSON.parse(stored) };
-    }
-  } catch(e) {}
-  applyTheme(appSettings.theme);
-}
-
-function saveSettings() {
-  try {
-    localStorage.setItem('bac_settings', JSON.stringify(appSettings));
-  } catch(e) {}
-}
+// (loadSettings/saveSettings are defined in Section 1 - settings variable includes all enhanced fields)
 
 function applyTheme(theme) {
   const root = document.documentElement;
@@ -5780,7 +5756,7 @@ function applyTheme(theme) {
     root.style.setProperty(key, value);
   });
 
-  appSettings.theme = theme;
+  settings.theme = theme;
   saveSettings();
 }
 
@@ -5790,7 +5766,7 @@ function getAnimationDelay() {
     normal: 400,
     fast: 200
   };
-  return delays[appSettings.animationSpeed] || 400;
+  return delays[settings.animationSpeed] || 400;
 }
 
 function renderEnhancedSettings() {
@@ -5801,34 +5777,34 @@ function renderEnhancedSettings() {
       <div class="setting-group">
         <label>${t('anim_speed')}</label>
         <div class="setting-options">
-          <button class="setting-btn ${appSettings.animationSpeed === 'slow' ? 'active' : ''}" data-setting-anim="slow">${t('anim_slow')}</button>
-          <button class="setting-btn ${appSettings.animationSpeed === 'normal' ? 'active' : ''}" data-setting-anim="normal">${t('anim_normal')}</button>
-          <button class="setting-btn ${appSettings.animationSpeed === 'fast' ? 'active' : ''}" data-setting-anim="fast">${t('anim_fast')}</button>
+          <button class="setting-btn ${settings.animationSpeed === 'slow' ? 'active' : ''}" data-setting-anim="slow">${t('anim_slow')}</button>
+          <button class="setting-btn ${settings.animationSpeed === 'normal' ? 'active' : ''}" data-setting-anim="normal">${t('anim_normal')}</button>
+          <button class="setting-btn ${settings.animationSpeed === 'fast' ? 'active' : ''}" data-setting-anim="fast">${t('anim_fast')}</button>
         </div>
       </div>
 
       <div class="setting-group">
         <label>${t('theme')}</label>
         <div class="setting-options">
-          <button class="setting-btn ${appSettings.theme === 'dark' ? 'active' : ''}" data-setting-theme="dark">🌙 ${t('theme_dark')}</button>
-          <button class="setting-btn ${appSettings.theme === 'midnight' ? 'active' : ''}" data-setting-theme="midnight">⭐ ${t('theme_midnight')}</button>
-          <button class="setting-btn ${appSettings.theme === 'deep-purple' ? 'active' : ''}" data-setting-theme="deep-purple">💜 ${t('theme_purple')}</button>
+          <button class="setting-btn ${settings.theme === 'dark' ? 'active' : ''}" data-setting-theme="dark">🌙 ${t('theme_dark')}</button>
+          <button class="setting-btn ${settings.theme === 'midnight' ? 'active' : ''}" data-setting-theme="midnight">⭐ ${t('theme_midnight')}</button>
+          <button class="setting-btn ${settings.theme === 'deep-purple' ? 'active' : ''}" data-setting-theme="deep-purple">💜 ${t('theme_purple')}</button>
         </div>
       </div>
 
       <div class="setting-group">
         <label>${t('card_style')}</label>
         <div class="setting-options">
-          <button class="setting-btn ${appSettings.cardStyle === 'classic' ? 'active' : ''}" data-setting-card="classic">${t('card_classic')}</button>
-          <button class="setting-btn ${appSettings.cardStyle === 'modern' ? 'active' : ''}" data-setting-card="modern">${t('card_modern')}</button>
-          <button class="setting-btn ${appSettings.cardStyle === 'minimal' ? 'active' : ''}" data-setting-card="minimal">${t('card_minimal')}</button>
+          <button class="setting-btn ${settings.cardStyle === 'classic' ? 'active' : ''}" data-setting-card="classic">${t('card_classic')}</button>
+          <button class="setting-btn ${settings.cardStyle === 'modern' ? 'active' : ''}" data-setting-card="modern">${t('card_modern')}</button>
+          <button class="setting-btn ${settings.cardStyle === 'minimal' ? 'active' : ''}" data-setting-card="minimal">${t('card_minimal')}</button>
         </div>
       </div>
 
       <div class="setting-group">
         <label>${t('auto_deal')}</label>
         <div class="toggle-switch">
-          <input type="checkbox" id="auto-deal-toggle" ${appSettings.autoDeal ? 'checked' : ''} data-setting="autoDeal">
+          <input type="checkbox" id="auto-deal-toggle" ${settings.autoDeal ? 'checked' : ''} data-setting="autoDeal">
           <span class="toggle-slider"></span>
         </div>
       </div>
@@ -5836,7 +5812,7 @@ function renderEnhancedSettings() {
       <div class="setting-group">
         <label>${t('sound')}</label>
         <div class="toggle-switch">
-          <input type="checkbox" id="sound-toggle" ${appSettings.soundEnabled ? 'checked' : ''} data-setting="soundEnabled">
+          <input type="checkbox" id="sound-toggle" ${settings.sound ? 'checked' : ''} data-setting="soundEnabled">
           <span class="toggle-slider"></span>
         </div>
       </div>
@@ -5844,7 +5820,7 @@ function renderEnhancedSettings() {
       <div class="setting-group">
         <label>${t('vibrate')}</label>
         <div class="toggle-switch">
-          <input type="checkbox" id="vibrate-toggle" ${appSettings.vibrationEnabled ? 'checked' : ''} data-setting="vibrationEnabled">
+          <input type="checkbox" id="vibrate-toggle" ${settings.vibrate ? 'checked' : ''} data-setting="vibrationEnabled">
           <span class="toggle-slider"></span>
         </div>
       </div>
@@ -5852,7 +5828,7 @@ function renderEnhancedSettings() {
       <div class="setting-group">
         <label>${t('notifications')}</label>
         <div class="toggle-switch">
-          <input type="checkbox" id="notif-toggle" ${appSettings.notificationEnabled ? 'checked' : ''} data-setting="notificationEnabled">
+          <input type="checkbox" id="notif-toggle" ${settings.notificationEnabled ? 'checked' : ''} data-setting="notificationEnabled">
           <span class="toggle-slider"></span>
         </div>
       </div>
