@@ -4577,9 +4577,9 @@ function renderShop(tab = 'avatars') {
 
   grid.innerHTML = '';
 
-  const items = tab === 'avatars' ? SHOP_ITEMS.filter(i => i.type === 'avatar') :
-                tab === 'tables' ? SHOP_ITEMS.filter(i => i.type === 'table') :
-                SHOP_ITEMS.filter(i => i.type === 'cardback');
+  const items = tab === 'avatars' ? ([]) :
+                tab === 'tables' ? ([]) :
+                ([]);
 
   for (const item of items) {
     const card = document.createElement('div');
@@ -4672,7 +4672,7 @@ function renderAchievements() {
     card.className = 'achievement-card';
     card.style.opacity = isUnlocked ? '1' : '0.5';
     card.innerHTML = `
-      <div style="font-size: 2em; margin-bottom: 8px;">${achievement.emoji}</div>
+      <div style="font-size: 2em; margin-bottom: 8px;">${achievement.icon}</div>
       <div style="font-weight: bold; font-size: 12px;">${achievement.name}</div>
       <div style="font-size: 10px; color: #666; margin-bottom: 8px;">${achievement.description}</div>
       ${isUnlocked ? `
@@ -6376,12 +6376,12 @@ function showOnlinePanel() {
 function checkDailyBonus() {
   const today = getDayKey();
   if (profile.lastCheckinDate === today) {
-    const checkinCard = document.querySelector('.daily-checkin-card');
+    const checkinCard = document.querySelector('.daily-checkin');
     if (checkinCard) checkinCard.style.display = 'none';
     return;
   }
 
-  const checkinCard = document.querySelector('.daily-checkin-card');
+  const checkinCard = document.querySelector('.daily-checkin');
   if (checkinCard) checkinCard.style.display = 'block';
 }
 
@@ -6481,33 +6481,3 @@ function init() {
     console.error('init error:', e);
   }
 }
-
-// Safe startup with visual error reporting
-function safeStart() {
-  try {
-    // Show immediate loading indicator
-    document.body.style.cssText = 'margin:0;padding:0;width:100%;height:100%;background:#0a0e17;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;';
-    document.body.innerHTML = '<div style="text-align:center;"><div style="font-size:48px;margin-bottom:16px;">🎰</div><div style="font-size:18px;color:#d4af37;">Loading FA Baccarat...</div></div>';
-
-    // Run init after a tiny delay to let loading screen render
-    setTimeout(function() {
-      try {
-        document.body.innerHTML = '';
-        document.body.style.cssText = '';
-        init();
-      } catch(e) {
-        document.body.innerHTML = '<div style="padding:20px;color:#ff4444;font-family:monospace;background:#111;min-height:100vh;"><h2 style="color:#d4af37;">FA Baccarat Error</h2><pre style="white-space:pre-wrap;word-break:break-all;margin-top:16px;color:#ff6b6b;">' + e.message + '\n\n' + (e.stack||'') + '</pre></div>';
-      }
-    }, 50);
-  } catch(e2) {
-    alert('Baccarat load error: ' + e2.message);
-  }
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', safeStart);
-} else {
-  safeStart();
-}
-
-})();
