@@ -971,11 +971,14 @@ body::before {
   top: 0; left: 0; right: 0; bottom: 0;
   width: 100%;
   height: 100%;
+  height: 100dvh;
   max-width: 480px;
   margin: 0 auto;
   background: linear-gradient(135deg, #0f0a2a 0%, #1a1145 50%, #0f0a2a 100%);
   z-index: 1;
   overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  touch-action: manipulation;
 }
 
 .screen {
@@ -1420,20 +1423,26 @@ body::before {
 
 .bottom-nav {
   position: fixed;
-  bottom: 12px;
-  left: 16px;
-  right: 16px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
   background: rgba(26,17,69,0.9);
   backdrop-filter: blur(20px);
-  border-radius: 24px;
+  border-radius: 0;
   border: 1px solid var(--primary);
+  border-bottom: none;
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 8px 0;
+  padding-bottom: env(safe-area-inset-bottom);
   z-index: 200;
   box-shadow: 0 0 30px rgba(212,175,55,0.2), inset 0 0 30px rgba(212,175,55,0.05);
 }
+
+.sc-game .bottom-nav { display: none !important; }
 
 .nav-item {
   flex: 1;
@@ -1499,17 +1508,13 @@ body::before {
 }
 
 .dealer-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), rgba(255,215,0,0.3));
-  border: 3px solid var(--primary);
+  width: 100%;
+  max-width: 120px;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36px;
-  box-shadow: 0 0 20px var(--primary-glow), inset 0 0 15px rgba(255,215,0,0.2);
-  animation: rotateRing 3s linear infinite;
+  margin: 0 auto;
 }
 
 @keyframes rotateRing {
@@ -1528,13 +1533,15 @@ body::before {
   background: linear-gradient(180deg, var(--felt-dark) 0%, var(--felt-color) 100%);
   border: 2px solid var(--primary);
   border-radius: 12px;
-  padding: 16px;
+  padding: 10px 8px;
   box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 15px rgba(212,175,55,0.2);
-  min-height: 180px;
+  min-height: 140px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
+  gap: 6px;
+  overflow: hidden;
+  width: 100%;
 }
 
 .player-side,
@@ -1564,12 +1571,15 @@ body::before {
 
 .card-slots {
   display: flex;
-  gap: 6px;
-  margin-bottom: 8px;
+  gap: 3px;
+  margin-bottom: 6px;
+  flex-wrap: nowrap;
+  justify-content: center;
+  max-width: 100%;
 }
 
 .score-display {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--primary-light);
   text-shadow: 0 0 10px var(--primary-glow);
@@ -1622,20 +1632,20 @@ body::before {
 /* ===== PLAYING CARD ===== */
 
 .playing-card {
-  width: 65px;
-  height: 92px;
+  width: 48px;
+  height: 68px;
   background: #fff;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   position: relative;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   transform-style: preserve-3d;
   perspective: 1000px;
-  font-size: 11px;
+  font-size: 10px;
   flex-shrink: 0;
 }
 
@@ -1749,49 +1759,52 @@ body::before {
 .bet-table {
   background: linear-gradient(180deg, var(--felt-dark) 0%, var(--felt-color) 100%);
   border: 2px solid var(--primary);
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 10px;
+  padding: 6px 4px;
   display: flex;
-  gap: 8px;
+  gap: 4px;
   justify-content: space-between;
   box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 15px rgba(212,175,55,0.2);
+  width: 100%;
+  overflow: hidden;
 }
 
 .bet-zone {
   flex: 1;
+  min-width: 0;
   background: rgba(45,27,105,0.6);
   border: 2px dashed rgba(212,175,55,0.5);
-  border-radius: 10px;
-  padding: 10px 6px;
+  border-radius: 8px;
+  padding: 6px 2px;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   position: relative;
 }
 
 .bet-zone .zone-multiplier {
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 700;
   color: var(--primary);
   background: rgba(212,175,55,0.1);
-  padding: 2px 4px;
-  border-radius: 4px;
+  padding: 1px 3px;
+  border-radius: 3px;
 }
 
 .bet-zone .zone-label {
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 .bet-zone .zone-bet-amount {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
-  min-height: 18px;
+  min-height: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1869,14 +1882,12 @@ body::before {
 /* ===== CHIP TRAY ===== */
 
 .chip-tray {
-  background: rgba(45,27,105,0.6);
-  border: 1px solid var(--primary);
-  border-radius: 12px;
-  padding: 12px;
-  margin: 12px;
+  background: rgba(45,27,105,0.4);
+  border-radius: 8px;
+  padding: 6px 4px;
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 6px;
+  flex-wrap: nowrap;
   justify-content: center;
 }
 
@@ -1934,13 +1945,20 @@ body::before {
 
 .game-controls {
   position: fixed;
-  bottom: 12px;
-  left: 12px;
-  right: 12px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
   z-index: 150;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 4px;
+  padding: 6px 8px;
+  padding-bottom: max(6px, env(safe-area-inset-bottom));
+  background: rgba(15,10,42,0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(212,175,55,0.3);
 }
 
 .game-actions {
@@ -3202,6 +3220,14 @@ body::before {
    ============================================================================ */
 
 function boot() {
+  // Ensure mobile viewport
+  if (!document.querySelector('meta[name="viewport"]')) {
+    var vp = document.createElement('meta');
+    vp.name = 'viewport';
+    vp.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
+    document.head.appendChild(vp);
+  }
+
   // Inject CSS
   var styleEl = document.createElement('style');
   styleEl.textContent = CSS_TEXT;
@@ -3261,7 +3287,29 @@ function boot() {
         
         <!-- Mascot Character Area -->
         <div class="home-mascot">
-          <div class="mascot-character">👧🏻</div>
+          <div class="mascot-character" style="width:80px;height:90px;">
+            <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+              <ellipse cx="100" cy="75" rx="55" ry="50" fill="#5c3317"/>
+              <ellipse cx="100" cy="85" rx="42" ry="40" fill="#fce4c8"/>
+              <path d="M58 70 Q65 40 100 35 Q135 40 142 70 L138 55 Q130 45 100 40 Q70 45 62 55 Z" fill="#5c3317"/>
+              <path d="M62 68 Q70 50 85 52 L80 68 Z" fill="#6b3a1f"/>
+              <path d="M85 52 Q100 45 115 52 L110 68 Q100 58 90 68 Z" fill="#6b3a1f"/>
+              <path d="M115 52 Q130 50 138 68 L132 68 Z" fill="#6b3a1f"/>
+              <path d="M78 82 Q84 76 90 82" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M110 82 Q116 76 122 82" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <ellipse cx="75" cy="90" rx="8" ry="5" fill="rgba(255,150,150,0.4)"/>
+              <ellipse cx="125" cy="90" rx="8" ry="5" fill="rgba(255,150,150,0.4)"/>
+              <path d="M92 98 Q100 106 108 98" stroke="#d4627a" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <rect x="92" y="120" width="16" height="12" rx="4" fill="#fce4c8"/>
+              <path d="M65 170 L70 132 Q85 128 100 128 Q115 128 130 132 L135 170 Z" fill="#1a1a2e"/>
+              <path d="M80 132 Q90 128 100 128 Q110 128 120 132 L118 155 Q100 158 82 155 Z" fill="#fff"/>
+              <path d="M80 132 L90 132 L88 155 L80 155 Z" fill="#1a1a2e"/>
+              <path d="M110 132 L120 132 L120 155 L112 155 Z" fill="#1a1a2e"/>
+              <path d="M96 132 L100 128 L104 132 L102 142 L100 145 L98 142 Z" fill="#d4af37"/>
+              <ellipse cx="60" cy="165" rx="12" ry="8" fill="#fce4c8" transform="rotate(-15, 60, 165)"/>
+              <ellipse cx="140" cy="165" rx="12" ry="8" fill="#fce4c8" transform="rotate(15, 140, 165)"/>
+            </svg>
+          </div>
           <div class="mascot-cards">
             <div class="mascot-card">A♥</div>
             <div class="mascot-card">K♠</div>
@@ -3367,11 +3415,52 @@ function boot() {
         </div>
       </div>
       
-      <div class="screen-content" style="padding-bottom: 380px !important;">
+      <div class="screen-content" style="padding-bottom: 200px;">
         <!-- Dealer Section -->
-        <div class="dealer-section">
-          <div class="dealer-avatar" id="dealer-avatar">🎩</div>
-          <div class="dealer-name" data-i18n="dealer">Dealer</div>
+        <div class="dealer-section" style="text-align:center;padding:8px 0;">
+          <div class="dealer-avatar" id="dealer-avatar" style="width:100%;max-width:120px;margin:0 auto;">
+            <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+              <!-- Hair back -->
+              <ellipse cx="100" cy="75" rx="55" ry="50" fill="#5c3317"/>
+              <!-- Face -->
+              <ellipse cx="100" cy="85" rx="42" ry="40" fill="#fce4c8"/>
+              <!-- Hair front -->
+              <path d="M58 70 Q65 40 100 35 Q135 40 142 70 L138 55 Q130 45 100 40 Q70 45 62 55 Z" fill="#5c3317"/>
+              <!-- Hair bangs -->
+              <path d="M62 68 Q70 50 85 52 L80 68 Z" fill="#6b3a1f"/>
+              <path d="M85 52 Q100 45 115 52 L110 68 Q100 58 90 68 Z" fill="#6b3a1f"/>
+              <path d="M115 52 Q130 50 138 68 L132 68 Z" fill="#6b3a1f"/>
+              <!-- Eyes closed (happy) -->
+              <path d="M78 82 Q84 76 90 82" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M110 82 Q116 76 122 82" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <!-- Blush -->
+              <ellipse cx="75" cy="90" rx="8" ry="5" fill="rgba(255,150,150,0.4)"/>
+              <ellipse cx="125" cy="90" rx="8" ry="5" fill="rgba(255,150,150,0.4)"/>
+              <!-- Mouth smile -->
+              <path d="M92 98 Q100 106 108 98" stroke="#d4627a" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <!-- Neck -->
+              <rect x="92" y="120" width="16" height="12" rx="4" fill="#fce4c8"/>
+              <!-- Body / Vest -->
+              <path d="M65 170 L70 132 Q85 128 100 128 Q115 128 130 132 L135 170 Z" fill="#1a1a2e"/>
+              <!-- White shirt -->
+              <path d="M80 132 Q90 128 100 128 Q110 128 120 132 L118 155 Q100 158 82 155 Z" fill="#fff"/>
+              <!-- Vest lapels -->
+              <path d="M80 132 L90 132 L88 155 L80 155 Z" fill="#1a1a2e"/>
+              <path d="M110 132 L120 132 L120 155 L112 155 Z" fill="#1a1a2e"/>
+              <!-- Tie/Ribbon -->
+              <path d="M96 132 L100 128 L104 132 L102 142 L100 145 L98 142 Z" fill="#d4af37"/>
+              <!-- Name tag -->
+              <rect x="82" y="148" width="36" height="12" rx="3" fill="#d4af37"/>
+              <text x="100" y="157" text-anchor="middle" font-size="7" fill="#1a1a2e" font-weight="bold">DEALER</text>
+              <!-- Hands (dealing pose) -->
+              <ellipse cx="60" cy="165" rx="12" ry="8" fill="#fce4c8" transform="rotate(-15, 60, 165)"/>
+              <ellipse cx="140" cy="165" rx="12" ry="8" fill="#fce4c8" transform="rotate(15, 140, 165)"/>
+              <!-- Card in hand -->
+              <rect x="132" y="152" width="18" height="24" rx="2" fill="#fff" stroke="#ccc" stroke-width="0.5" transform="rotate(10, 141, 164)"/>
+              <text x="141" y="167" text-anchor="middle" font-size="8" fill="#dc2626" transform="rotate(10, 141, 164)">♥</text>
+            </svg>
+          </div>
+          <div class="dealer-name" data-i18n="dealer" style="color:#d4af37;font-weight:700;font-size:13px;margin-top:2px;">Dealer</div>
         </div>
         
         <!-- Card Display Area -->
@@ -4925,11 +5014,8 @@ function renderAIPlayers() {
 }
 
 function renderDealerAvatar() {
-  const root = document.getElementById('kk-root');
-  if (!root) return;
-  const container = root.querySelector('.dealer-area');
-  if (!container) return;
-  container.innerHTML = '<div class="dealer-avatar" style="text-align:center;padding:16px"><div style="font-size:48px">🎩</div><div style="color:#e2e8f0;font-weight:bold">Dealer</div><div style="color:#94a3b8;font-size:12px">Live Baccarat</div></div>';
+  // Dealer is now rendered as SVG in HTML template - no dynamic rendering needed
+  return;
 }
 
 function renderShop(tab) {
