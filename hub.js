@@ -3788,6 +3788,13 @@ function boot() {
               <div class="toggle-slider"></div>
             </div>
           </div>
+
+          <div class="setting-item">
+            <div class="setting-label" data-i18n="bg_music">Background Music</div>
+            <div class="toggle-switch" id="toggle-bgmusic" data-action="toggle-bgmusic">
+              <div class="toggle-slider"></div>
+            </div>
+          </div>
         </div>
         
         <!-- Personalization -->
@@ -3900,9 +3907,9 @@ function boot() {
         </div>
         
         <div class="tutorial-buttons">
-          <button class="tut-btn" id="tut-prev" data-i18n="prev" style="display:none;">Prev</button>
-          <button class="tut-btn" id="tut-next" data-i18n="next">Next</button>
-          <button class="tut-btn" id="tut-finish" data-i18n="finish" style="display:none;">Finish</button>
+          <button class="tut-btn" id="tut-prev" data-action="prev-tut" data-i18n="prev" style="display:none;">Prev</button>
+          <button class="tut-btn" id="tut-next" data-action="next-tut" data-i18n="next">Next</button>
+          <button class="tut-btn" id="tut-finish" data-action="finish-tut" data-i18n="finish" style="display:none;">Finish</button>
         </div>
       </div>
     </div>
@@ -4361,6 +4368,96 @@ function playSound(type) {
   osc.stop(now + (durations[type] || 0.1));
 }
 
+var bgMusic = null;
+var bgMusicGain = null;
+
+function startBGMusic() {
+  if (bgMusic) return;
+  var ctx = initAudio();
+  if (!ctx) return;
+
+  bgMusicGain = ctx.createGain();
+  bgMusicGain.gain.value = 0.06;
+  bgMusicGain.connect(ctx.destination);
+
+  // Ambient casino loop using layered oscillators
+  var notes = [196, 220, 247, 262, 294, 330, 349, 392]; // G3 to G4
+  var baseTime = ctx.currentTime;
+
+  function playLoop() {
+    if (!bgMusic) return;
+    var ctx2 = initAudio();
+    if (!ctx2 || !bgMusicGain) return;
+    var now = ctx2.currentTime;
+
+    // Soft pad chord
+    var chords = [
+      [196, 247, 294],  // G minor
+      [220, 262, 330],  // A minor
+      [175, 220, 262],  // F major
+      [196, 247, 294],  // G minor
+    ];
+
+    var chordIdx = Math.floor(Math.random() * chords.length);
+    var chord = chords[chordIdx];
+
+    chord.forEach(function(freq) {
+      var osc = ctx2.createOscillator();
+      var g = ctx2.createGain();
+      osc.connect(g);
+      g.connect(bgMusicGain);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(0.03, now);
+      g.gain.linearRampToValueAtTime(0.06, now + 1);
+      g.gain.linearRampToValueAtTime(0.03, now + 3);
+      g.gain.linearRampToValueAtTime(0, now + 4);
+      osc.start(now);
+      osc.stop(now + 4);
+    });
+
+    // Soft melody note
+    var melodyNote = notes[Math.floor(Math.random() * notes.length)];
+    var melOsc = ctx2.createOscillator();
+    var melGain = ctx2.createGain();
+    melOsc.connect(melGain);
+    melGain.connect(bgMusicGain);
+    melOsc.type = 'triangle';
+    melOsc.frequency.value = melodyNote * 2;
+    melGain.gain.setValueAtTime(0, now + 0.5);
+    melGain.gain.linearRampToValueAtTime(0.04, now + 1);
+    melGain.gain.linearRampToValueAtTime(0, now + 2.5);
+    melOsc.start(now + 0.5);
+    melOsc.stop(now + 2.5);
+
+    bgMusic = setTimeout(playLoop, 4000);
+  }
+
+  bgMusic = setTimeout(playLoop, 100);
+}
+
+function stopBGMusic() {
+  if (bgMusic) {
+    clearTimeout(bgMusic);
+    bgMusic = null;
+  }
+  if (bgMusicGain) {
+    try { bgMusicGain.gain.value = 0; } catch(e) {}
+    bgMusicGain = null;
+  }
+}
+
+function toggleBGMusic() {
+  if (bgMusic) {
+    stopBGMusic();
+    settings.bgMusic = false;
+  } else {
+    startBGMusic();
+    settings.bgMusic = true;
+  }
+  saveSettings();
+}
+
 // ============================================================================
 // SECTION 7: Utilities (~200 lines)
 // ============================================================================
@@ -4494,6 +4591,8 @@ function updateAllUI() {
     if (sd) sd.textContent = starsStr;
     var gs = document.getElementById('game-stars');
     if (gs) gs.textContent = starsStr;
+    var ss = document.getElementById('shop-stars');
+    if (ss) ss.textContent = starsStr;
     // Update session stats
     if (typeof sessionStats !== 'undefined' && sessionStats) {
       var sh = document.getElementById('session-hands');
@@ -4623,6 +4722,7 @@ function startAIGame() {
   renderChips();
   renderBetZones();
   playSound('click');
+  startBGMusic();
 }
 
 function placeBet(type) {
@@ -4911,6 +5011,7 @@ async function dealRound() {
 
     saveProfile();
     updateAllUI();
+    submitScore();
 
     gameState.inProgress = false;
     return;
@@ -5008,6 +5109,7 @@ async function dealRound() {
 
   saveProfile();
   updateAllUI();
+  submitScore();
 
   gameState.inProgress = false;
 }
@@ -5599,14 +5701,23 @@ function isItemEquipped(category, itemId) {
 function submitScore() {
   if (!firebaseOK()) return;
   try {
+    var equippedAv = (typeof shopData !== 'undefined' && shopData && shopData.equipped) ? shopData.equipped.avatars : 'default';
+    var avatarItem = SHOP_ITEMS.avatars.find(function(a) { return a.id === (equippedAv || 'default'); });
+    var avatarEmoji = avatarItem ? avatarItem.emoji : '😺';
+
     firebase.database().ref('leaderboards/baccarat/' + profile.userId).set({
       nickname: profile.nickname,
+      avatar: avatarEmoji,
       stars: profile.stars,
       totalWins: profile.totalWins,
       totalPlayed: profile.totalPlayed,
       timestamp: Date.now()
+    }).catch(function(error) {
+      console.error('Score submission failed:', error);
     });
-  } catch(e) {}
+  } catch(e) {
+    console.error('submitScore error:', e);
+  }
 }
 
 function fetchRanking(tab) {
@@ -5833,33 +5944,44 @@ function getTutorialSteps() {
 
 function showTutorialStep(step) {
   tutorialStep = step;
-  const tutContent = document.querySelector('.tutorial-content');
-  if (!tutContent) return;
 
-  var steps = getTutorialSteps();
-  const stepData = steps[step] || steps[0];
-  var totalSteps = steps.length;
-
-  var icons = ['🎰', '🃏', '💰', '📋', '🏆', '👫', '🗺️', '💡'];
-  tutContent.innerHTML = '<div style="text-align:center;padding:8px 0;">' +
-    '<div style="font-size:48px;margin-bottom:12px;">' + (icons[step] || '🎰') + '</div>' +
-    '<h2 style="color:#d4af37;margin-bottom:12px;font-size:18px;">' + stepData.title + '</h2>' +
-    '<p style="color:#e2e8f0;margin-bottom:16px;font-size:14px;line-height:1.6;padding:0 8px;">' + stepData.desc + '</p>' +
-    '<div style="color:#94a3b8;font-size:12px;">' + (step + 1) + ' / ' + totalSteps + '</div></div>';
-
-  const dots = document.getElementById('tutorial-dots');
-  if (dots) {
-    dots.innerHTML = '';
-    for (let i = 0; i < totalSteps; i++) {
-      const dot = document.createElement('div');
-      dot.style.cssText = 'width:8px;height:8px;background:' + (i === step ? '#d4af37' : '#3d2463') + ';border-radius:50%;display:inline-block;margin:0 4px';
-      dots.appendChild(dot);
+  // Show/hide tutorial step divs
+  var allSteps = document.querySelectorAll('.tutorial-step');
+  allSteps.forEach(function(s, i) {
+    if (i === step) {
+      s.classList.add('active');
+      s.style.display = 'block';
+    } else {
+      s.classList.remove('active');
+      s.style.display = 'none';
     }
-  }
+  });
+
+  var totalSteps = allSteps.length;
+
+  // Update dots
+  var allDots = document.querySelectorAll('.tutorial-dot');
+  allDots.forEach(function(d, i) {
+    if (i === step) {
+      d.classList.add('active');
+    } else {
+      d.classList.remove('active');
+    }
+  });
+
+  // Show/hide buttons
+  var prevBtn = document.getElementById('tut-prev');
+  var nextBtn = document.getElementById('tut-next');
+  var finishBtn = document.getElementById('tut-finish');
+
+  if (prevBtn) prevBtn.style.display = step > 0 ? 'inline-block' : 'none';
+  if (nextBtn) nextBtn.style.display = step < totalSteps - 1 ? 'inline-block' : 'none';
+  if (finishBtn) finishBtn.style.display = step >= totalSteps - 1 ? 'inline-block' : 'none';
 }
 
 function nextTutStep() {
-  if (tutorialStep < 7) {
+  var totalSteps = document.querySelectorAll('.tutorial-step').length;
+  if (tutorialStep < totalSteps - 1) {
     showTutorialStep(tutorialStep + 1);
   }
 }
@@ -5939,6 +6061,23 @@ function recoverStars() {
   saveProfile();
   updateAllUI();
   hideOverlay('bankrupt-overlay');
+}
+
+function cleanupStaleRooms() {
+  if (!firebaseOK()) return;
+  try {
+    var roomsRef = firebase.database().ref('baccaratRooms');
+    roomsRef.once('value').then(function(snap) {
+      var now = Date.now();
+      var oneHour = 60 * 60 * 1000;
+      snap.forEach(function(child) {
+        var room = child.val();
+        if (room && room.createdAt && (now - room.createdAt > oneHour)) {
+          child.ref.remove();
+        }
+      });
+    }).catch(function() {});
+  } catch(e) {}
 }
 
 // ============================================================================
@@ -6296,6 +6435,11 @@ function setupListeners() {
       return;
     }
 
+    if (action === 'toggle-bgmusic') {
+      toggleBGMusic();
+      return;
+    }
+
     if (action === 'create-room') {
       const titleInput = document.getElementById('room-title-input');
       const wagerInput = document.getElementById('wager-input');
@@ -6473,6 +6617,7 @@ function setupListeners() {
         if (exitPopup) exitPopup.style.display = 'flex';
       } else {
         playSound('click');
+        stopBGMusic();
         showScreen('home');
       }
       return;
@@ -6483,6 +6628,9 @@ function setupListeners() {
       if (exitPopup2) exitPopup2.style.display = 'none';
       gameState.mode = null;
       gameState.inProgress = false;
+      onlineState.roomCode = null;
+      onlineState.isHost = false;
+      stopBGMusic();
       playSound('click');
       showScreen('home');
       return;
@@ -6578,6 +6726,7 @@ function init() {
     ensureFirebaseInit().then(function() {
       Online.ready().then(function() {
         Online.goOnline();
+        cleanupStaleRooms();
       }).catch(function() {});
     }).catch(function() {});
   } catch (e) {}
