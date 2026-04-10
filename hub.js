@@ -1073,11 +1073,14 @@ body::before {
   box-shadow: 0 0 10px var(--primary);
 }
 
-.sparkle:nth-child(9) { top: 15%; left: 25%; animation-delay: 0s; }
-.sparkle:nth-child(10) { top: 45%; right: 15%; animation-delay: 0.5s; }
-.sparkle:nth-child(11) { bottom: 25%; left: 30%; animation-delay: 1s; }
-.sparkle:nth-child(12) { bottom: 40%; right: 25%; animation-delay: 1.5s; }
-.sparkle:nth-child(13) { top: 55%; left: 15%; animation-delay: 2s; }
+.sparkle:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
+.sparkle:nth-child(2) { top: 30%; right: 10%; animation-delay: 0.5s; }
+.sparkle:nth-child(3) { bottom: 35%; left: 25%; animation-delay: 1s; }
+.sparkle:nth-child(4) { bottom: 20%; right: 20%; animation-delay: 1.5s; }
+.sparkle:nth-child(5) { top: 50%; left: 10%; animation-delay: 2s; }
+.sparkle:nth-child(6) { top: 15%; right: 25%; animation-delay: 0.3s; }
+.sparkle:nth-child(7) { bottom: 45%; left: 40%; animation-delay: 1.3s; }
+.sparkle:nth-child(8) { top: 65%; right: 30%; animation-delay: 1.8s; }
 
 @keyframes sparkleAnim {
   0%, 100% { opacity: 0; }
@@ -1533,7 +1536,7 @@ body::before {
   background: linear-gradient(180deg, var(--felt-dark) 0%, var(--felt-color) 100%);
   border: 2px solid var(--primary);
   border-radius: 12px;
-  padding: 10px 8px;
+  padding: 8px 6px;
   box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 15px rgba(212,175,55,0.2);
   min-height: 140px;
   display: flex;
@@ -1571,7 +1574,7 @@ body::before {
 
 .card-slots {
   display: flex;
-  gap: 3px;
+  gap: 2px;
   margin-bottom: 6px;
   flex-wrap: nowrap;
   justify-content: center;
@@ -1632,8 +1635,8 @@ body::before {
 /* ===== PLAYING CARD ===== */
 
 .playing-card {
-  width: 48px;
-  height: 68px;
+  width: 42px;
+  height: 60px;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -1657,7 +1660,7 @@ body::before {
   position: absolute;
   top: 4px;
   left: 4px;
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .playing-card::after {
@@ -1666,11 +1669,11 @@ body::before {
   bottom: 4px;
   right: 4px;
   transform: rotate(180deg);
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .playing-card .suit {
-  font-size: 28px;
+  font-size: 22px;
 }
 
 .playing-card.cardback {
@@ -3261,14 +3264,9 @@ function boot() {
       <div class="screen-content">
         <!-- Animated Background -->
         <div class="home-background">
-          <div class="floating-card">🂡</div>
-          <div class="floating-card">🂢</div>
-          <div class="floating-card">🃁</div>
-          <div class="floating-card">🃑</div>
-          <div class="floating-card">🂫</div>
-          <div class="floating-card">🃛</div>
-          <div class="floating-card">😺</div>
-          <div class="floating-card">🂡</div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
           <div class="sparkle"></div>
           <div class="sparkle"></div>
           <div class="sparkle"></div>
@@ -3325,14 +3323,16 @@ function boot() {
         </div>
         
         <!-- Action Buttons -->
-        <div class="action-buttons">
-          <button class="btn-large" data-action="play-ai">
-            <span class="emoji">😺</span>
-            <span data-i18n="play_vs_dealer">Play vs Dealer</span>
+        <div class="action-buttons" style="display:flex;gap:10px;padding:8px 0;">
+          <button data-action="play-ai" style="flex:1;background:linear-gradient(135deg,#1a3a5c,#0d2137);border:2px solid #00b4d8;border-radius:14px;padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 0 20px rgba(0,180,216,0.2),inset 0 1px 0 rgba(255,255,255,0.1);">
+            <div style="font-size:32px;filter:drop-shadow(0 0 8px rgba(0,180,216,0.5));">🎰</div>
+            <div style="color:#00b4d8;font-weight:800;font-size:13px;letter-spacing:0.5px;" data-i18n="play_vs_dealer">Play vs Dealer</div>
+            <div style="position:absolute;top:6px;right:8px;background:#00b4d8;color:#fff;font-size:9px;padding:2px 6px;border-radius:8px;font-weight:700;">AI</div>
           </button>
-          <button class="btn-large btn-online" data-action="play-online">
-            <span class="emoji">👥</span>
-            <span data-i18n="online_table">Online Table</span>
+          <button data-action="play-online" style="flex:1;background:linear-gradient(135deg,#3a1a4e,#210d37);border:2px solid #a855f7;border-radius:14px;padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 0 20px rgba(168,85,247,0.2),inset 0 1px 0 rgba(255,255,255,0.1);">
+            <div style="font-size:32px;filter:drop-shadow(0 0 8px rgba(168,85,247,0.5));">🌐</div>
+            <div style="color:#a855f7;font-weight:800;font-size:13px;letter-spacing:0.5px;" data-i18n="online_table">Online Table</div>
+            <div style="position:absolute;top:6px;right:8px;background:#a855f7;color:#fff;font-size:9px;padding:2px 6px;border-radius:8px;font-weight:700;">LIVE</div>
           </button>
         </div>
         
@@ -3417,8 +3417,8 @@ function boot() {
       
       <div class="screen-content" style="padding-bottom: 200px;">
         <!-- Dealer Section -->
-        <div class="dealer-section" style="text-align:center;padding:8px 0;">
-          <div class="dealer-avatar" id="dealer-avatar" style="width:100%;max-width:120px;margin:0 auto;">
+        <div class="dealer-section" style="text-align:center;padding:4px 0;display:flex;flex-direction:column;align-items:center;">
+          <div class="dealer-avatar" id="dealer-avatar" style="width:80px;height:auto;margin:0 auto;">
             <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
               <!-- Hair back -->
               <ellipse cx="100" cy="75" rx="55" ry="50" fill="#5c3317"/>
@@ -3460,7 +3460,7 @@ function boot() {
               <text x="141" y="167" text-anchor="middle" font-size="8" fill="#dc2626" transform="rotate(10, 141, 164)">♥</text>
             </svg>
           </div>
-          <div class="dealer-name" data-i18n="dealer" style="color:#d4af37;font-weight:700;font-size:13px;margin-top:2px;">Dealer</div>
+          <div class="dealer-name" data-i18n="dealer" style="color:#d4af37;font-weight:700;font-size:13px;margin-top:2px;display:none;">Dealer</div>
         </div>
         
         <!-- Card Display Area -->
@@ -3542,11 +3542,7 @@ function boot() {
         <div class="title" style="font-family: serif;" data-i18n="ranking">Ranking</div>
       </div>
       
-      <div class="ranking-tabs">
-        <button class="tab-btn active" data-tab="weekly" data-i18n="app_title" style="width:auto;">Weekly</button>
-        <button class="tab-btn" data-tab="all" style="width:auto;">All Time</button>
-        <button class="tab-btn" data-tab="last" style="width:auto;">Last Week</button>
-      </div>
+      <div style="padding:12px 16px;color:#d4af37;font-weight:bold;font-size:16px;text-align:center;">All-Time Ranking</div>
       
       <div class="screen-content">
         <div class="podium" id="ranking-podium"></div>
@@ -4416,6 +4412,26 @@ function updateAllUI() {
       el.textContent = bindings[key];
     });
   });
+
+  // Update avatars
+  var avatarItem = SHOP_ITEMS.avatars.find(function(a) { return a.id === (shopData.equipped.avatars || 'default'); });
+  var avatarEmoji = avatarItem ? avatarItem.emoji : '😺';
+  var homeAv = document.getElementById('home-avatar');
+  if (homeAv) homeAv.textContent = avatarEmoji;
+  var profileAv = document.getElementById('profile-avatar');
+  if (profileAv) profileAv.textContent = avatarEmoji;
+
+  // Update star displays by ID
+  var starsStr = formatNumber(profile.stars);
+  var sd = document.getElementById('stars-display');
+  if (sd) sd.textContent = starsStr;
+  var gs = document.getElementById('game-stars');
+  if (gs) gs.textContent = starsStr;
+  // Update session stats
+  var sh = document.getElementById('session-hands');
+  if (sh) sh.textContent = sessionStats.handsPlayed;
+  var sp = document.getElementById('session-profit');
+  if (sp) sp.textContent = (sessionStats.netProfit >= 0 ? '+' : '') + formatNumber(sessionStats.netProfit);
 }
 
 function updateNavHighlight(screen) {
@@ -4947,7 +4963,7 @@ function renderChips() {
     chipEl.textContent = formatNumber(chip);
     chipEl.style.cssText = 'background:linear-gradient(135deg,#d4af37 0%,#aa8c2a 100%);border:2px solid #8a6e1f;padding:10px 18px;border-radius:8px;cursor:pointer;color:#0f0a2a;font-weight:bold;font-size:14px;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)';
     if (chip === gameState.selectedChip) {
-      chipEl.style.cssText += ';transform:scale(1.1);box-shadow:0 4px 12px rgba(212,175,55,0.6);border-color:#fff';
+      chipEl.style.cssText += ';transform:scale(1.15);box-shadow:0 0 15px rgba(212,175,55,0.8);border-color:#ffd700;background:linear-gradient(135deg,#ffd700,#d4af37)';
     }
     chipWrapper.appendChild(chipEl);
     tray.appendChild(chipWrapper);
@@ -5122,25 +5138,66 @@ function renderRanking(tab) {
   if (!container) return;
   container.innerHTML = '';
 
-  const topPlayers = [
-    { rank: 1, name: 'Gold Player', stars: 50000, change: '+5%' },
-    { rank: 2, name: 'Silver Player', stars: 45000, change: '+2%' },
-    { rank: 3, name: 'Bronze Player', stars: 40000, change: '-1%' },
-    { rank: 4, name: 'Player 4', stars: 35000, change: '+3%' },
-    { rank: 5, name: 'Player 5', stars: 30000, change: '0%' }
+  // Try Firebase first
+  if (firebaseOK()) {
+    try {
+      var dbRef = firebase.database().ref('leaderboards/baccarat');
+      dbRef.orderByChild('stars').limitToLast(50).once('value').then(function(snap) {
+        var players = [];
+        snap.forEach(function(child) {
+          players.push(child.val());
+        });
+        players.sort(function(a, b) { return (b.stars || 0) - (a.stars || 0); });
+        renderRankingCards(container, players);
+      }).catch(function() {
+        renderRankingCards(container, getLocalRanking());
+      });
+    } catch(e) {
+      renderRankingCards(container, getLocalRanking());
+    }
+  } else {
+    renderRankingCards(container, getLocalRanking());
+  }
+}
+
+function getLocalRanking() {
+  var me = { nickname: profile.nickname, stars: profile.stars, totalWins: profile.totalWins };
+  var bots = [
+    { nickname: 'VIP King', stars: 85000, totalWins: 320 },
+    { nickname: 'Lucky Star', stars: 62000, totalWins: 245 },
+    { nickname: 'CardMaster', stars: 51000, totalWins: 198 },
+    { nickname: 'GoldHand', stars: 43000, totalWins: 167 },
+    { nickname: 'AcePlayer', stars: 38000, totalWins: 142 },
+    { nickname: 'Diamond', stars: 29000, totalWins: 115 },
+    { nickname: 'HighRoller', stars: 22000, totalWins: 89 },
+    { nickname: 'Phoenix', stars: 18000, totalWins: 72 },
+    { nickname: 'Tiger', stars: 12000, totalWins: 48 },
+    { nickname: 'Rookie', stars: 5000, totalWins: 15 }
   ];
+  var all = [me].concat(bots);
+  all.sort(function(a, b) { return (b.stars || 0) - (a.stars || 0); });
+  return all;
+}
 
-  topPlayers.forEach(function(p) {
-    const medal = p.rank === 1 ? '🥇' : (p.rank === 2 ? '🥈' : (p.rank === 3 ? '🥉' : ''));
-    const card = document.createElement('div');
-    card.style.cssText = 'background:#2d1b4e;border:2px solid #3d2463;padding:12px;border-radius:8px;margin-bottom:8px;display:flex;align-items:center;gap:12px';
+function renderRankingCards(container, players) {
+  container.innerHTML = '';
+  if (players.length === 0) {
+    container.innerHTML = '<div style="color:#94a3b8;padding:32px;text-align:center">No ranking data yet</div>';
+    return;
+  }
+  players.forEach(function(p, i) {
+    var rank = i + 1;
+    var medal = rank === 1 ? '🥇' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : ''));
+    var isMe = p.nickname === profile.nickname;
+    var card = document.createElement('div');
+    card.style.cssText = 'background:' + (isMe ? 'rgba(212,175,55,0.15)' : '#2d1b4e') + ';border:2px solid ' + (isMe ? '#d4af37' : '#3d2463') + ';padding:12px;border-radius:10px;margin-bottom:8px;display:flex;align-items:center;gap:12px';
 
-    let html = '<div style="font-size:20px">' + medal + '</div>';
+    var html = '<div style="width:28px;text-align:center;font-size:' + (rank <= 3 ? '20px' : '14px') + ';color:' + (rank <= 3 ? '#d4af37' : '#94a3b8') + ';font-weight:bold">' + (medal || '#' + rank) + '</div>';
     html += '<div style="flex:1">';
-    html += '<div style="color:#e2e8f0;font-weight:bold">#' + p.rank + ' ' + p.name + '</div>';
-    html += '<div style="color:#94a3b8;font-size:12px">' + formatNumber(p.stars) + ' ⭐</div>';
+    html += '<div style="color:' + (isMe ? '#d4af37' : '#e2e8f0') + ';font-weight:bold;font-size:14px">' + (p.nickname || 'Player') + (isMe ? ' (You)' : '') + '</div>';
+    html += '<div style="color:#94a3b8;font-size:12px">' + t('wins') + ': ' + (p.totalWins || 0) + '</div>';
     html += '</div>';
-    html += '<div style="color:#d4af37;font-weight:bold">' + p.change + '</div>';
+    html += '<div style="color:#d4af37;font-weight:bold;font-size:14px">' + formatNumber(p.stars || 0) + ' ⭐</div>';
 
     card.innerHTML = html;
     container.appendChild(card);
@@ -5237,7 +5294,10 @@ function renderStatistics() {
 
 function renderProfileScreen() {
   const avatar = document.getElementById('profile-avatar');
-  if (avatar) avatar.textContent = profile.avatar || '👤';
+  if (avatar) {
+    var avatarItem = SHOP_ITEMS.avatars.find(function(a) { return a.id === (shopData.equipped.avatars || 'default'); });
+    avatar.textContent = avatarItem ? avatarItem.emoji : '😺';
+  }
 
   const nickname = document.getElementById('nickname-input');
   if (nickname) nickname.value = profile.nickname;
@@ -5464,16 +5524,16 @@ function isItemEquipped(category, itemId) {
 // ============================================================================
 
 function submitScore() {
-  if (!firebaseOK()) return Promise.resolve();
-
-  return db.collection('leaderboards').doc('baccarat').collection('scores').doc(profile.userId).set({
-    nickname: profile.nickname,
-    stars: profile.stars,
-    totalWins: profile.totalWins,
-    totalPlayed: profile.totalPlayed,
-    winRate: profile.totalPlayed > 0 ? profile.totalWins / profile.totalPlayed : 0,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-  }, { merge: true }).catch(function() {});
+  if (!firebaseOK()) return;
+  try {
+    firebase.database().ref('leaderboards/baccarat/' + profile.userId).set({
+      nickname: profile.nickname,
+      stars: profile.stars,
+      totalWins: profile.totalWins,
+      totalPlayed: profile.totalPlayed,
+      timestamp: Date.now()
+    });
+  } catch(e) {}
 }
 
 function fetchRanking(tab) {
@@ -5485,7 +5545,7 @@ function fetchRanking(tab) {
     .then(function(snap) {
       const results = [];
       snap.forEach(function(doc) {
-        results.push(doc.data());
+        results.push(doc.val());
       });
       return results;
     })
@@ -5651,8 +5711,10 @@ function toggleSetting(key) {
 function changeLang(newLang) {
   lang = newLang;
   settings.language = newLang;
+  localStorage.setItem('lang', newLang);
   saveSettings();
   applyI18n();
+  updateI18n();
   showToast(t('language_changed'), 2000);
 }
 
@@ -5810,13 +5872,13 @@ const Online = {
     if (!firebaseOK()) return;
     try {
       const userId = profile.userId;
-      const docRef = db.collection('online_players').doc(userId);
-      docRef.set({
+      const dbRef = firebase.database().ref('baccaratPresence/' + userId);
+      dbRef.set({
         nickname: profile.nickname,
         avatar: profile.avatar,
         stars: profile.stars,
-        lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true }).catch(function() {});
+        lastSeen: firebase.database.ServerValue.TIMESTAMP
+      }).catch(function() {});
     } catch (e) {}
   },
 
@@ -5824,14 +5886,14 @@ const Online = {
     if (!firebaseOK()) return;
     try {
       const userId = profile.userId;
-      db.collection('online_players').doc(userId).delete().catch(function() {});
+      firebase.database().ref('baccaratPresence/' + userId).remove().catch(function() {});
     } catch (e) {}
   },
 
   getOnlineCount: function() {
     if (!firebaseOK()) return Promise.resolve(0);
-    return db.collection('online_players').get()
-      .then(function(snap) { return snap.size; })
+    return firebase.database().ref('baccaratPresence').once('value')
+      .then(function(snap) { return snap.numChildren(); })
       .catch(function() { return 0; });
   },
 
@@ -5849,7 +5911,7 @@ const Online = {
     if (!firebaseOK()) return Promise.reject(new Error('Firebase not ready'));
 
     const code = Math.random().toString(36).substr(2, 4).toUpperCase();
-    const roomRef = db.collection('baccaratRooms').doc(code);
+    const roomRef = firebase.database().ref('baccaratRooms/' + code);
 
     return roomRef.set({
       code: code,
@@ -5860,7 +5922,7 @@ const Online = {
       maxPlayers: 8,
       status: 'waiting',
       players: {},
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      createdAt: firebase.database.ServerValue.TIMESTAMP
     }).then(function() {
       return code;
     }).catch(function() {
@@ -5871,11 +5933,11 @@ const Online = {
   joinRoom: function(code) {
     if (!firebaseOK()) return Promise.reject(new Error('Firebase not ready'));
 
-    const roomRef = db.collection('baccaratRooms').doc(code);
-    return roomRef.get().then(function(doc) {
-      if (!doc.exists) return Promise.reject(new Error('Room not found'));
+    const roomRef = firebase.database().ref('baccaratRooms/' + code);
+    return roomRef.once('value').then(function(doc) {
+      if (!doc.val()) return Promise.reject(new Error('Room not found'));
 
-      const room = doc.data();
+      const room = doc.val();
       room.players = room.players || {};
       room.players[profile.userId] = {
         name: profile.nickname,
@@ -5894,11 +5956,11 @@ const Online = {
   leaveRoom: function(code) {
     if (!firebaseOK()) return Promise.resolve();
 
-    const roomRef = db.collection('baccaratRooms').doc(code);
-    return roomRef.get().then(function(doc) {
-      if (!doc.exists) return;
+    const roomRef = firebase.database().ref('baccaratRooms/' + code);
+    return roomRef.once('value').then(function(doc) {
+      if (!doc.val()) return;
 
-      const room = doc.data();
+      const room = doc.val();
       room.players = room.players || {};
       delete room.players[profile.userId];
 
@@ -5909,16 +5971,16 @@ const Online = {
   getOpenRooms: function() {
     if (!firebaseOK()) return Promise.resolve([]);
 
-    return db.collection('baccaratRooms')
-      .where('status', '==', 'waiting')
-      .orderBy('createdAt', 'desc')
-      .get()
+    return firebase.database().ref('baccaratRooms').once('value')
       .then(function(snap) {
         const rooms = [];
-        snap.forEach(function(doc) {
-          rooms.push(doc.data());
+        snap.forEach(function(childSnap) {
+          const room = childSnap.val();
+          if (room && room.status === 'waiting') {
+            rooms.push(room);
+          }
         });
-        return rooms;
+        return rooms.sort(function(a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
       })
       .catch(function() {
         return [];
@@ -5928,10 +5990,10 @@ const Online = {
   onRoomUpdate: function(code, callback) {
     if (!firebaseOK()) return function() {};
 
-    const roomRef = db.collection('baccaratRooms').doc(code);
-    return roomRef.onSnapshot(function(doc) {
-      if (doc.exists) {
-        callback(doc.data());
+    const roomRef = firebase.database().ref('baccaratRooms/' + code);
+    return roomRef.on('value', function(doc) {
+      if (doc.val()) {
+        callback(doc.val());
       }
     }, function() {});
   },
@@ -5939,10 +6001,10 @@ const Online = {
   onPresenceChange: function(callback) {
     if (!firebaseOK()) return function() {};
 
-    return db.collection('online_players').onSnapshot(function(snap) {
+    return firebase.database().ref('baccaratPresence').on('value', function(snap) {
       const players = [];
-      snap.forEach(function(doc) {
-        players.push(doc.data());
+      snap.forEach(function(childSnap) {
+        players.push(childSnap.val());
       });
       callback(players);
     }, function() {});
@@ -6183,10 +6245,15 @@ function setupListeners() {
 
     if (action === 'close-result') {
       hideOverlay('result-overlay');
-      renderGameTable();
+      gameState.inProgress = false;
       gameState.currentBet = null;
       gameState.betAmount = 0;
+      gameState.selectedChip = CHIPS[0];
+      renderGameTable();
+      renderChips();
       renderBetZones();
+      updateBetTotal();
+      updateAllUI();
       return;
     }
 
@@ -6334,6 +6401,22 @@ function setupListeners() {
           showToast(t('join_failed'), 2000);
         });
       }
+      return;
+    }
+  });
+
+  // Language select change handler
+  root.addEventListener('change', function(e) {
+    var target = e.target;
+    if (target.id === 'lang-select') {
+      changeLang(target.value);
+      // Re-render all visible screens
+      renderProfileScreen();
+      renderSettingsState();
+      return;
+    }
+    if (target.id === 'speed-select') {
+      changeSpeed(target.value);
       return;
     }
   });
