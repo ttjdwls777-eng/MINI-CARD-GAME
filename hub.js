@@ -33,7 +33,7 @@ function ensureFirebaseInit(){
 const STARTING_STARS = 10000;
 const DAILY_BONUS = 100;
 const MAX_BET = 50000;
-const CHIPS = [100, 500, 1000, 5000, 10000];
+const CHIPS = [100, 500, 1000, 10000];
 
 const SUITS = ['♠', '♥', '♦', '♣'];
 const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
@@ -1213,53 +1213,77 @@ body::before {
 
 /* ===== DAILY CHECK-IN CARD ===== */
 
-.daily-checkin {
-  background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(20,184,166,0.2));
-  border: 2px solid var(--accent-purple);
+.home-mascot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 16px;
+  margin: 12px 16px;
+  background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(212,175,55,0.15));
   border-radius: 16px;
-  padding: 16px;
-  margin: 16px;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(168,85,247,0.3);
+  border: 1px solid rgba(212,175,55,0.25);
+  overflow: hidden;
+  min-height: 120px;
 }
-
-.daily-checkin .emoji {
-  font-size: 40px;
-  margin-bottom: 8px;
+.mascot-character {
+  font-size: 80px;
+  animation: mascotBounce 2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(212,175,55,0.4));
+  z-index: 2;
 }
-
-.daily-checkin .title {
-  color: var(--text-white);
-  font-weight: 700;
-  margin-bottom: 4px;
+@keyframes mascotBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.05); }
 }
-
-.daily-checkin .subtitle {
-  color: var(--text-muted);
-  font-size: 12px;
-  margin-bottom: 12px;
+.mascot-cards {
+  display: flex;
+  gap: 6px;
+  z-index: 2;
 }
-
-.daily-checkin .btn-claim {
-  background: linear-gradient(135deg, var(--accent-purple), var(--accent-teal));
-  color: var(--text-white);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 0 15px rgba(168,85,247,0.5);
+.mascot-card {
+  width: 44px;
+  height: 62px;
+  background: linear-gradient(135deg, #fff 0%, #f0e6d4 100%);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: mascotCardFloat 3s ease-in-out infinite;
+  border: 1.5px solid rgba(212,175,55,0.5);
 }
-
-.daily-checkin .btn-claim:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(168,85,247,0.8);
+.mascot-card:nth-child(1) { color: #e74c3c; animation-delay: 0s; }
+.mascot-card:nth-child(2) { color: #2c3e50; animation-delay: 0.3s; }
+.mascot-card:nth-child(3) { color: #e74c3c; animation-delay: 0.6s; }
+@keyframes mascotCardFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(-3deg); }
+  66% { transform: translateY(-5px) rotate(3deg); }
 }
-
-.daily-checkin .btn-claim:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.mascot-sparkles {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+}
+.mascot-sparkle {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: #d4af37;
+  border-radius: 50%;
+  animation: mSparkle 2s ease-in-out infinite;
+}
+.mascot-sparkle:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+.mascot-sparkle:nth-child(2) { top: 25%; right: 15%; animation-delay: 0.4s; }
+.mascot-sparkle:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 0.8s; }
+.mascot-sparkle:nth-child(4) { top: 40%; right: 10%; animation-delay: 1.2s; }
+.mascot-sparkle:nth-child(5) { bottom: 10%; right: 25%; animation-delay: 1.6s; }
+@keyframes mSparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1.5); }
 }
 
 /* ===== ACTION BUTTONS ===== */
@@ -3048,6 +3072,128 @@ body::before {
   0% { transform: translateY(0) scale(1); opacity: 1; }
   100% { transform: translateY(-100px) scale(0); opacity: 0; }
 }
+
+.bet-confirm-popup {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+.bet-confirm-box {
+  background: linear-gradient(135deg, #2d1b4e, #1a1335);
+  border: 2px solid #d4af37;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  max-width: 300px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.bet-confirm-title {
+  color: #d4af37;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+.bet-confirm-amount {
+  color: #fff;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 12px 0;
+}
+.bet-confirm-zone {
+  color: #00d9ff;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+.bet-confirm-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.bet-confirm-yes {
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #0f0a2a;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+.bet-confirm-no {
+  background: rgba(255,255,255,0.1);
+  color: #e2e8f0;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+.bet-total-display {
+  text-align: center;
+  padding: 8px;
+  color: #d4af37;
+  font-weight: bold;
+  font-size: 16px;
+  min-height: 24px;
+}
+.room-confirm-popup {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+.star-fly {
+  position: fixed;
+  font-size: 16px;
+  z-index: 999;
+  pointer-events: none;
+  animation: starFlyAnim 0.8s ease-out forwards;
+}
+@keyframes starFlyAnim {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: translateY(60px) scale(0.3); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.dealer-dealing {
+  animation: dealerDealAnim 0.6s ease-in-out;
+}
+@keyframes dealerDealAnim {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-5deg); }
+  50% { transform: scale(1.15) rotate(5deg); }
+  75% { transform: scale(1.1) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.chip-count-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #0f0a2a;
+}
 `;
 
 
@@ -3113,12 +3259,21 @@ function boot() {
           </div>
         </div>
         
-        <!-- Daily Check-in -->
-        <div class="daily-checkin">
-          <div class="emoji">🎁</div>
-          <div class="title" data-i18n="daily_check_in">Daily Check-in</div>
-          <div class="subtitle" id="checkin-msg" data-i18n="check_in_tomorrow">Check in tomorrow</div>
-          <button class="btn-claim" id="btn-checkin" data-action="claim-daily" data-i18n="claim" style="display:none;">Claim</button>
+        <!-- Mascot Character Area -->
+        <div class="home-mascot">
+          <div class="mascot-character">👧🏻</div>
+          <div class="mascot-cards">
+            <div class="mascot-card">A♥</div>
+            <div class="mascot-card">K♠</div>
+            <div class="mascot-card">Q♦</div>
+          </div>
+          <div class="mascot-sparkles">
+            <div class="mascot-sparkle"></div>
+            <div class="mascot-sparkle"></div>
+            <div class="mascot-sparkle"></div>
+            <div class="mascot-sparkle"></div>
+            <div class="mascot-sparkle"></div>
+          </div>
         </div>
         
         <!-- Action Buttons -->
@@ -3280,15 +3435,14 @@ function boot() {
       
       <!-- Game Controls (Fixed) -->
       <div class="game-controls">
+        <div class="bet-total-display" id="bet-total-display"></div>
         <!-- Chip Tray -->
         <div class="chip-tray" id="chip-tray"></div>
-        
+
         <!-- Action Buttons -->
-        <div class="game-actions">
-          <button class="btn btn-cancel" data-action="cancel-bet" data-i18n="cancel_bet">Cancel</button>
-          <button class="btn btn-rebet" data-action="rebet" data-i18n="rebet">Re-bet</button>
-          <button class="btn btn-double" data-action="double-bet" data-i18n="double_bet">x2</button>
-          <button class="btn btn-deal" id="btn-deal" data-action="deal" data-i18n="deal" disabled>DEAL</button>
+        <div class="game-actions" style="display:flex;gap:8px;padding:8px 16px;">
+          <button class="btn btn-cancel" data-action="clear-bet" style="flex:1;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#e2e8f0;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;">Clear</button>
+          <button class="btn btn-deal" id="btn-deal" data-action="confirm-bet" style="flex:2;background:linear-gradient(135deg,#d4af37,#b8941f);border:none;color:#0f0a2a;padding:12px;border-radius:8px;font-weight:bold;font-size:16px;cursor:pointer;">BET</button>
         </div>
       </div>
     </div>
@@ -3734,6 +3888,43 @@ function boot() {
       </div>
     </div>
     
+    <!-- Bet Confirmation Popup -->
+    <div class="bet-confirm-popup" id="bet-confirm-popup" style="display:none;">
+      <div class="bet-confirm-box">
+        <div class="bet-confirm-title" data-i18n="confirm_bet">Confirm Bet</div>
+        <div class="bet-confirm-amount" id="confirm-bet-amount">0</div>
+        <div class="bet-confirm-zone" id="confirm-bet-zone"></div>
+        <div class="bet-confirm-buttons">
+          <button class="bet-confirm-no" data-action="cancel-confirm">Cancel</button>
+          <button class="bet-confirm-yes" data-action="do-deal">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Room Confirm Popup -->
+    <div class="room-confirm-popup" id="room-enter-popup" style="display:none;">
+      <div class="bet-confirm-box">
+        <div class="bet-confirm-title">Enter Room</div>
+        <div style="color:#e2e8f0;margin:16px 0;font-size:15px;" id="room-enter-msg">Enter this room?</div>
+        <div class="bet-confirm-buttons">
+          <button class="bet-confirm-no" data-action="cancel-room-enter">Cancel</button>
+          <button class="bet-confirm-yes" data-action="confirm-room-enter">Enter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Room Exit Popup -->
+    <div class="room-confirm-popup" id="room-exit-popup" style="display:none;">
+      <div class="bet-confirm-box">
+        <div class="bet-confirm-title">Leave Room</div>
+        <div style="color:#e2e8f0;margin:16px 0;font-size:15px;">Do you want to leave this room?</div>
+        <div class="bet-confirm-buttons">
+          <button class="bet-confirm-no" data-action="cancel-room-exit">Stay</button>
+          <button class="bet-confirm-yes" data-action="confirm-room-exit">Leave</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Containers for dynamic content -->
     <div id="toast-container" style="position:fixed; bottom:100px; left:0; right:0; pointer-events:none; z-index:700;"></div>
     <div id="confetti-container" style="position:fixed; top:0; left:0; right:0; bottom:0; pointer-events:none; z-index:400;"></div>
@@ -4261,10 +4452,22 @@ function startAIGame() {
 
 function placeBet(type) {
   if (gameState.inProgress) return;
-  if (!gameState.selectedChip) return;
+  if (!gameState.selectedChip) {
+    gameState.selectedChip = CHIPS[0];
+  }
 
+  // Set or change bet zone
+  if (gameState.currentBet && gameState.currentBet !== type) {
+    // Switching zone - reset amount
+    gameState.betAmount = 0;
+  }
   gameState.currentBet = type;
-  gameState.betAmount = gameState.selectedChip;
+
+  // Accumulate bet
+  gameState.betAmount += gameState.selectedChip;
+  if (gameState.betAmount > profile.stars) {
+    gameState.betAmount = profile.stars;
+  }
 
   document.querySelectorAll('.bet-zone').forEach(function(z) {
     z.classList.remove('active');
@@ -4284,6 +4487,7 @@ function placeBet(type) {
   }
 
   renderBetZones();
+  updateBetTotal();
   playSound('chip');
 }
 
@@ -4292,29 +4496,60 @@ function selectChip(value) {
   renderChips();
 }
 
-function cancelBet() {
+function clearBet() {
   gameState.currentBet = null;
   gameState.betAmount = 0;
   document.querySelectorAll('.bet-zone').forEach(function(z) {
     z.classList.remove('active');
   });
   renderBetZones();
+  updateBetTotal();
 }
 
-function rebet() {
-  if (!lastBet) return;
-  placeBet(lastBet.type);
-  gameState.betAmount = lastBet.amount;
-  renderBetZones();
-}
-
-function doubleBet() {
-  if (!gameState.currentBet) return;
-  gameState.betAmount *= 2;
-  if (gameState.betAmount > profile.stars) {
-    gameState.betAmount = profile.stars;
+function updateBetTotal() {
+  const el = document.getElementById('bet-total-display');
+  if (!el) return;
+  if (gameState.betAmount > 0 && gameState.currentBet) {
+    const zoneNames = { player: 'PLAYER', banker: 'BANKER', tie: 'TIE', ppair: 'P.PAIR', bpair: 'B.PAIR' };
+    el.textContent = formatNumber(gameState.betAmount) + ' ⭐ → ' + (zoneNames[gameState.currentBet] || '');
+  } else {
+    el.textContent = '';
   }
-  renderBetZones();
+}
+
+function showBetConfirm() {
+  if (!gameState.currentBet || gameState.betAmount <= 0) {
+    showToast('Select a bet zone and amount first', 2000);
+    return;
+  }
+  if (gameState.betAmount > profile.stars) {
+    showToast('Insufficient stars', 2000);
+    return;
+  }
+  const zoneNames = { player: 'PLAYER', banker: 'BANKER', tie: 'TIE', ppair: 'P.PAIR', bpair: 'B.PAIR' };
+  const popup = document.getElementById('bet-confirm-popup');
+  const amountEl = document.getElementById('confirm-bet-amount');
+  const zoneEl = document.getElementById('confirm-bet-zone');
+  if (popup) popup.style.display = 'flex';
+  if (amountEl) amountEl.textContent = formatNumber(gameState.betAmount) + ' ⭐';
+  if (zoneEl) zoneEl.textContent = zoneNames[gameState.currentBet] || '';
+}
+
+function showStarFlyAnimation() {
+  const starsPill = document.querySelector('.stars-pill');
+  if (!starsPill) return;
+  const rect = starsPill.getBoundingClientRect();
+  for (let i = 0; i < 5; i++) {
+    setTimeout(function() {
+      const star = document.createElement('div');
+      star.className = 'star-fly';
+      star.textContent = '⭐';
+      star.style.left = (rect.left + Math.random() * rect.width) + 'px';
+      star.style.top = rect.top + 'px';
+      document.body.appendChild(star);
+      setTimeout(function() { star.remove(); }, 800);
+    }, i * 100);
+  }
 }
 
 function shouldPlayerDraw(score) {
@@ -4336,6 +4571,15 @@ function animateCardDeal(containerId, card, index) {
     if (!container) {
       resolve();
       return;
+    }
+
+    // Dealer hand animation
+    var dealerEl = document.querySelector('.dealer-avatar');
+    if (dealerEl) {
+      dealerEl.classList.remove('dealer-dealing');
+      void dealerEl.offsetWidth;
+      dealerEl.classList.add('dealer-dealing');
+      setTimeout(function() { dealerEl.classList.remove('dealer-dealing'); }, 600);
     }
 
     setTimeout(function() {
@@ -4374,7 +4618,7 @@ function showWinBanner(side) {
 
 async function dealRound() {
   if (gameState.inProgress) return;
-  if (!gameState.currentBet) {
+  if (!gameState.currentBet || gameState.betAmount <= 0) {
     showToast(t('select_bet'), 2000);
     return;
   }
@@ -4383,6 +4627,13 @@ async function dealRound() {
     showToast(t('insufficient_stars'), 2000);
     return;
   }
+
+  // Hide confirm popup
+  var confirmPopup = document.getElementById('bet-confirm-popup');
+  if (confirmPopup) confirmPopup.style.display = 'none';
+
+  // Star fly animation
+  showStarFlyAnimation();
 
   gameState.inProgress = true;
 
@@ -4595,6 +4846,9 @@ function renderChips() {
   if (!tray) return;
   tray.innerHTML = '';
   CHIPS.forEach(function(chip) {
+    const chipWrapper = document.createElement('div');
+    chipWrapper.style.cssText = 'position:relative;display:inline-block';
+
     const chipEl = document.createElement('button');
     chipEl.className = 'chip';
     if (chip === gameState.selectedChip) {
@@ -4602,11 +4856,12 @@ function renderChips() {
     }
     chipEl.setAttribute('data-chip', chip);
     chipEl.textContent = formatNumber(chip);
-    chipEl.style.cssText = 'background:linear-gradient(135deg,#d4af37 0%,#aa8c2a 100%);border:2px solid #8a6e1f;padding:8px 16px;border-radius:6px;cursor:pointer;color:#0f0a2a;font-weight:bold;margin:4px;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)';
+    chipEl.style.cssText = 'background:linear-gradient(135deg,#d4af37 0%,#aa8c2a 100%);border:2px solid #8a6e1f;padding:10px 18px;border-radius:8px;cursor:pointer;color:#0f0a2a;font-weight:bold;font-size:14px;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)';
     if (chip === gameState.selectedChip) {
-      chipEl.style.cssText += ';transform:scale(1.1);box-shadow:0 4px 12px rgba(212,175,55,0.6)';
+      chipEl.style.cssText += ';transform:scale(1.1);box-shadow:0 4px 12px rgba(212,175,55,0.6);border-color:#fff';
     }
-    tray.appendChild(chipEl);
+    chipWrapper.appendChild(chipEl);
+    tray.appendChild(chipWrapper);
   });
 }
 
@@ -5688,8 +5943,24 @@ function setupListeners() {
     }
 
     if (action === 'play-ai') {
+      var enterPopup = document.getElementById('room-enter-popup');
+      var enterMsg = document.getElementById('room-enter-msg');
+      if (enterMsg) enterMsg.textContent = 'Enter the dealer room?';
+      if (enterPopup) enterPopup.style.display = 'flex';
+      return;
+    }
+
+    if (action === 'confirm-room-enter') {
+      var enterPopup2 = document.getElementById('room-enter-popup');
+      if (enterPopup2) enterPopup2.style.display = 'none';
       playSound('click');
       startAIGame();
+      return;
+    }
+
+    if (action === 'cancel-room-enter') {
+      var enterPopup3 = document.getElementById('room-enter-popup');
+      if (enterPopup3) enterPopup3.style.display = 'none';
       return;
     }
 
@@ -5725,27 +5996,27 @@ function setupListeners() {
       return;
     }
 
-    if (action === 'deal') {
+    if (action === 'clear-bet') {
+      playSound('click');
+      clearBet();
+      return;
+    }
+
+    if (action === 'confirm-bet') {
+      playSound('click');
+      showBetConfirm();
+      return;
+    }
+
+    if (action === 'do-deal') {
       playSound('click');
       dealRound();
       return;
     }
 
-    if (action === 'cancel-bet') {
-      playSound('click');
-      cancelBet();
-      return;
-    }
-
-    if (action === 'rebet') {
-      playSound('click');
-      rebet();
-      return;
-    }
-
-    if (action === 'double-bet') {
-      playSound('click');
-      doubleBet();
+    if (action === 'cancel-confirm') {
+      var cp = document.getElementById('bet-confirm-popup');
+      if (cp) cp.style.display = 'none';
       return;
     }
 
@@ -5933,9 +6204,36 @@ function setupListeners() {
     }
 
     // Back buttons
-    if (action === 'back-to-home' || action === 'settings-back' || action === 'tutorial-back') {
+    if (action === 'settings-back' || action === 'tutorial-back') {
       playSound('click');
       showScreen('home');
+      return;
+    }
+
+    if (action === 'back-to-home') {
+      if (gameState.mode) {
+        var exitPopup = document.getElementById('room-exit-popup');
+        if (exitPopup) exitPopup.style.display = 'flex';
+      } else {
+        playSound('click');
+        showScreen('home');
+      }
+      return;
+    }
+
+    if (action === 'confirm-room-exit') {
+      var exitPopup2 = document.getElementById('room-exit-popup');
+      if (exitPopup2) exitPopup2.style.display = 'none';
+      gameState.mode = null;
+      gameState.inProgress = false;
+      playSound('click');
+      showScreen('home');
+      return;
+    }
+
+    if (action === 'cancel-room-exit') {
+      var exitPopup3 = document.getElementById('room-exit-popup');
+      if (exitPopup3) exitPopup3.style.display = 'none';
       return;
     }
 
