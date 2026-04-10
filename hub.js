@@ -4413,25 +4413,32 @@ function updateAllUI() {
     });
   });
 
-  // Update avatars
-  var avatarItem = SHOP_ITEMS.avatars.find(function(a) { return a.id === (shopData.equipped.avatars || 'default'); });
-  var avatarEmoji = avatarItem ? avatarItem.emoji : '😺';
-  var homeAv = document.getElementById('home-avatar');
-  if (homeAv) homeAv.textContent = avatarEmoji;
-  var profileAv = document.getElementById('profile-avatar');
-  if (profileAv) profileAv.textContent = avatarEmoji;
+  // Update avatars (guard against shopData not yet initialized)
+  try {
+    var equippedAv = (typeof shopData !== 'undefined' && shopData && shopData.equipped) ? shopData.equipped.avatars : 'default';
+    var avatarItem = SHOP_ITEMS.avatars.find(function(a) { return a.id === (equippedAv || 'default'); });
+    var avatarEmoji = avatarItem ? avatarItem.emoji : '😺';
+    var homeAv = document.getElementById('home-avatar');
+    if (homeAv) homeAv.textContent = avatarEmoji;
+    var profileAv = document.getElementById('profile-avatar');
+    if (profileAv) profileAv.textContent = avatarEmoji;
+  } catch(e) {}
 
   // Update star displays by ID
-  var starsStr = formatNumber(profile.stars);
-  var sd = document.getElementById('stars-display');
-  if (sd) sd.textContent = starsStr;
-  var gs = document.getElementById('game-stars');
-  if (gs) gs.textContent = starsStr;
-  // Update session stats
-  var sh = document.getElementById('session-hands');
-  if (sh) sh.textContent = sessionStats.handsPlayed;
-  var sp = document.getElementById('session-profit');
-  if (sp) sp.textContent = (sessionStats.netProfit >= 0 ? '+' : '') + formatNumber(sessionStats.netProfit);
+  try {
+    var starsStr = formatNumber(profile.stars);
+    var sd = document.getElementById('stars-display');
+    if (sd) sd.textContent = starsStr;
+    var gs = document.getElementById('game-stars');
+    if (gs) gs.textContent = starsStr;
+    // Update session stats
+    if (typeof sessionStats !== 'undefined' && sessionStats) {
+      var sh = document.getElementById('session-hands');
+      if (sh) sh.textContent = sessionStats.handsPlayed;
+      var sp = document.getElementById('session-profit');
+      if (sp) sp.textContent = (sessionStats.netProfit >= 0 ? '+' : '') + formatNumber(sessionStats.netProfit);
+    }
+  } catch(e) {}
 }
 
 function updateNavHighlight(screen) {
@@ -5295,8 +5302,11 @@ function renderStatistics() {
 function renderProfileScreen() {
   const avatar = document.getElementById('profile-avatar');
   if (avatar) {
-    var avatarItem = SHOP_ITEMS.avatars.find(function(a) { return a.id === (shopData.equipped.avatars || 'default'); });
-    avatar.textContent = avatarItem ? avatarItem.emoji : '😺';
+    try {
+      var equippedAv = (typeof shopData !== 'undefined' && shopData && shopData.equipped) ? shopData.equipped.avatars : 'default';
+      var avatarItem = SHOP_ITEMS.avatars.find(function(a) { return a.id === (equippedAv || 'default'); });
+      avatar.textContent = avatarItem ? avatarItem.emoji : '😺';
+    } catch(e) { avatar.textContent = '😺'; }
   }
 
   const nickname = document.getElementById('nickname-input');
