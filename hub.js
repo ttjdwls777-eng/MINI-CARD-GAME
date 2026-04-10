@@ -56,16 +56,16 @@ const BOT_AVATARS = ['🎩', '👑', '🕴️', '💼', '🤵', '🎭', '🎪', 
 
 const SHOP_ITEMS = {
   avatars: [
-    {id:'default',emoji:'🃏',price:0,name:'Joker'},
-    {id:'crown',emoji:'👑',price:5000,name:'Crown'},
-    {id:'diamond',emoji:'💎',price:8000,name:'Diamond'},
-    {id:'fire',emoji:'🔥',price:10000,name:'Fire'},
-    {id:'star',emoji:'⭐',price:12000,name:'Star'},
-    {id:'dragon',emoji:'🐉',price:15000,name:'Dragon'},
-    {id:'phoenix',emoji:'🦅',price:18000,name:'Phoenix'},
-    {id:'lion',emoji:'🦁',price:20000,name:'Lion'},
-    {id:'wolf',emoji:'🐺',price:25000,name:'Wolf'},
-    {id:'vip',emoji:'💰',price:50000,name:'VIP'}
+    {id:'default',emoji:'😺',price:0,name:'Kitty'},
+    {id:'bunny',emoji:'🐰',price:3000,name:'Bunny'},
+    {id:'bear',emoji:'🐻',price:5000,name:'Bear'},
+    {id:'panda',emoji:'🐼',price:8000,name:'Panda'},
+    {id:'fox',emoji:'🦊',price:10000,name:'Fox'},
+    {id:'unicorn',emoji:'🦄',price:15000,name:'Unicorn'},
+    {id:'dragon',emoji:'🐉',price:20000,name:'Dragon'},
+    {id:'crown',emoji:'👑',price:30000,name:'Royal'},
+    {id:'diamond',emoji:'💎',price:40000,name:'Diamond'},
+    {id:'vip',emoji:'🌟',price:50000,name:'VIP Star'}
   ],
   tables: [
     {id:'classic',emoji:'🟢',price:0,name:'Classic Green'},
@@ -971,8 +971,11 @@ body::before {
   top: 0; left: 0; right: 0; bottom: 0;
   width: 100%;
   height: 100%;
-  background: inherit;
+  max-width: 480px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #0f0a2a 0%, #1a1145 50%, #0f0a2a 100%);
   z-index: 1;
+  overflow: hidden;
 }
 
 .screen {
@@ -994,7 +997,10 @@ body::before {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 70px;
+  padding: 12px;
+  padding-bottom: 80px;
+  position: relative;
+  z-index: 2;
 }
 
 .screen-content::-webkit-scrollbar {
@@ -1017,23 +1023,24 @@ body::before {
   top: 0; left: 0; right: 0; bottom: 0;
   z-index: 0;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .floating-card {
   position: absolute;
-  width: 80px;
-  height: 110px;
-  background: rgba(255,255,255,0.08);
-  border: 2px solid var(--primary);
-  border-radius: 8px;
+  width: 50px;
+  height: 70px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(212,175,55,0.15);
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 40px;
-  opacity: 0.6;
+  font-size: 24px;
+  opacity: 0.25;
   animation: floatCard 8s ease-in-out infinite;
   transform-style: preserve-3d;
-  perspective: 1000px;
+  pointer-events: none;
 }
 
 .floating-card:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; animation-duration: 12s; }
@@ -3075,20 +3082,20 @@ function boot() {
             <span class="emoji">⭐</span>
             <span id="stars-display">10000</span>
           </div>
-          <button class="gear-btn" data-action="settings">⚙️</button>
+          <button class="gear-btn" data-action="open-settings">⚙️</button>
         </div>
       </div>
       
       <div class="screen-content">
         <!-- Animated Background -->
         <div class="home-background">
-          <div class="floating-card">🃏</div>
           <div class="floating-card">🂡</div>
-          <div class="floating-card">🂲</div>
-          <div class="floating-card">🃏</div>
-          <div class="floating-card">🂡</div>
-          <div class="floating-card">🂲</div>
-          <div class="floating-card">🃏</div>
+          <div class="floating-card">🂢</div>
+          <div class="floating-card">🃁</div>
+          <div class="floating-card">🃑</div>
+          <div class="floating-card">🂫</div>
+          <div class="floating-card">🃛</div>
+          <div class="floating-card">😺</div>
           <div class="floating-card">🂡</div>
           <div class="sparkle"></div>
           <div class="sparkle"></div>
@@ -3098,8 +3105,8 @@ function boot() {
         </div>
         
         <!-- Profile Mini -->
-        <div class="profile-mini" style="position: relative; z-index: 1;">
-          <div class="avatar" id="home-avatar">🃏</div>
+        <div class="profile-mini">
+          <div class="avatar" id="home-avatar">😺</div>
           <div class="info">
             <div class="nickname" id="home-nickname">Player</div>
             <div class="level-badge" id="home-level">Level 1</div>
@@ -3107,17 +3114,17 @@ function boot() {
         </div>
         
         <!-- Daily Check-in -->
-        <div class="daily-checkin" style="position: relative; z-index: 1;">
+        <div class="daily-checkin">
           <div class="emoji">🎁</div>
           <div class="title" data-i18n="daily_check_in">Daily Check-in</div>
           <div class="subtitle" id="checkin-msg" data-i18n="check_in_tomorrow">Check in tomorrow</div>
-          <button class="btn-claim" id="btn-checkin" data-action="daily-claim" data-i18n="claim" style="display:none;">Claim</button>
+          <button class="btn-claim" id="btn-checkin" data-action="claim-daily" data-i18n="claim" style="display:none;">Claim</button>
         </div>
         
         <!-- Action Buttons -->
-        <div class="action-buttons" style="position: relative; z-index: 1;">
-          <button class="btn-large" data-action="play-dealer">
-            <span class="emoji">🃏</span>
+        <div class="action-buttons">
+          <button class="btn-large" data-action="play-ai">
+            <span class="emoji">😺</span>
             <span data-i18n="play_vs_dealer">Play vs Dealer</span>
           </button>
           <button class="btn-large btn-online" data-action="play-online">
@@ -3127,7 +3134,7 @@ function boot() {
         </div>
         
         <!-- Session Summary -->
-        <div class="session-summary" style="position: relative; z-index: 1;">
+        <div class="session-summary">
           <div class="title" data-i18n="session_summary">Session Summary</div>
           <div class="session-summary-grid">
             <div class="summary-item">
@@ -3142,20 +3149,20 @@ function boot() {
         </div>
         
         <!-- Quick Grid -->
-        <div class="quick-grid" style="position: relative; z-index: 1;">
-          <div class="quick-item" data-action="show-history">
+        <div class="quick-grid">
+          <div class="quick-item" data-action="open-history">
             <div class="emoji">📋</div>
             <div class="label" data-i18n="history">History</div>
           </div>
-          <div class="quick-item" data-action="show-stats">
+          <div class="quick-item" data-action="open-stats">
             <div class="emoji">📊</div>
             <div class="label" data-i18n="statistics">Statistics</div>
           </div>
-          <div class="quick-item" data-action="show-tutorial">
+          <div class="quick-item" data-action="open-tutorial">
             <div class="emoji">📖</div>
             <div class="label" data-i18n="tutorial">Tutorial</div>
           </div>
-          <div class="quick-item" data-action="show-roadmap">
+          <div class="quick-item" data-action="roadmap">
             <div class="emoji">🗺️</div>
             <div class="label" data-i18n="road_map">Road Map</div>
           </div>
@@ -3424,7 +3431,7 @@ function boot() {
       
       <div class="screen-content">
         <div class="profile-section">
-          <div class="profile-avatar-large" id="profile-avatar">🃏</div>
+          <div class="profile-avatar-large" id="profile-avatar">😺</div>
           <div class="nickname-display" id="profile-nickname">Player</div>
           <div style="display:flex;gap:8px;margin:8px 0;max-width:240px;">
             <input type="text" id="nickname-input" placeholder="Nickname" maxlength="20" style="flex:1;padding:6px 10px;background:rgba(255,255,255,0.08);border:1px solid rgba(212,175,55,0.3);border-radius:8px;color:#e2e8f0;font-size:13px;">
@@ -3460,7 +3467,7 @@ function boot() {
           </div>
           
           <div class="profile-actions">
-            <button class="btn-edit" data-action="edit-profile" data-i18n="edit_profile">Edit Profile</button>
+            <button class="btn-edit" data-action="save-nickname" data-i18n="edit_profile">Edit Profile</button>
             <button class="btn-reset" data-action="reset-stats" data-i18n="reset_stats">Reset Stats</button>
           </div>
         </div>
@@ -3587,7 +3594,7 @@ function boot() {
           </div>
           
           <div class="tutorial-step" data-tutorial-step="1">
-            <div class="tutorial-emoji">🃏</div>
+            <div class="tutorial-emoji">😺</div>
             <div class="tutorial-title" data-i18n="tut_step2">Card Values</div>
             <div class="tutorial-text" data-i18n="tut_step2_desc">Ace=1, 2-9=face value, 10/J/Q/K=0. Only last digit counts.</div>
           </div>
@@ -3653,7 +3660,7 @@ function boot() {
     <!-- Room Panel -->
     <div class="overlay" id="room-panel">
       <div class="overlay-content">
-        <button class="overlay-close" data-action="close-room-panel">✕</button>
+        <button class="overlay-close" data-action="close-overlay">✕</button>
         <div class="overlay-title" data-i18n="online_table">Online Table</div>
         
         <div class="room-creation">
@@ -3690,7 +3697,7 @@ function boot() {
     <!-- History Panel -->
     <div class="overlay" id="history-panel">
       <div class="overlay-content">
-        <button class="overlay-close" data-action="close-history">✕</button>
+        <button class="overlay-close" data-action="close-overlay">✕</button>
         <div class="overlay-title" data-i18n="history">History</div>
         <div class="history-list" id="history-list"></div>
       </div>
@@ -3699,7 +3706,7 @@ function boot() {
     <!-- Stats Panel -->
     <div class="overlay" id="stats-panel">
       <div class="overlay-content">
-        <button class="overlay-close" data-action="close-stats">✕</button>
+        <button class="overlay-close" data-action="close-overlay">✕</button>
         <div class="overlay-title" data-i18n="statistics">Statistics</div>
         <div class="stats-content" id="stats-content"></div>
       </div>
@@ -3708,7 +3715,7 @@ function boot() {
     <!-- Road Map Panel -->
     <div class="overlay" id="roadmap-panel">
       <div class="overlay-content">
-        <button class="overlay-close" data-action="close-roadmap">✕</button>
+        <button class="overlay-close" data-action="close-overlay">✕</button>
         <div class="overlay-title" data-i18n="road_map">Road Map</div>
         
         <div class="big-road">
@@ -3781,7 +3788,7 @@ function loadProfile() {
   } else {
     profile = {
       userId: 'user_' + Math.random().toString(36).substr(2, 9),
-      nickname: 'Player',
+      nickname: 'Player' + Math.floor(Math.random() * 9000 + 1000),
       avatar: 'default',
       stars: STARTING_STARS,
       xp: 0,
