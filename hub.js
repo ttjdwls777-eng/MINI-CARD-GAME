@@ -3567,21 +3567,27 @@ function saveProfile() {
 }
 
 function loadSettings() {
-  const stored = localStorage.getItem('bac_settings_v2');
-  if (stored) {
-    settings = JSON.parse(stored);
-  } else {
-    settings = {
-      sound: true,
-      vibrate: true,
-      language: 'en'
-    };
-    saveSettings();
+  const defaults = {
+    sound: true,
+    vibrate: true,
+    language: 'en',
+    animationSpeed: 'normal',
+    autoDeal: false,
+    cardStyle: 'classic',
+    theme: 'dark',
+    notificationEnabled: true
+  };
+  try {
+    const stored = localStorage.getItem('bac_settings_v2');
+    settings = stored ? { ...defaults, ...JSON.parse(stored) } : { ...defaults };
+  } catch(e) {
+    settings = { ...defaults };
   }
+  try { applyTheme(settings.theme); } catch(e) {}
 }
 
 function saveSettings() {
-  localStorage.setItem('bac_settings_v2', JSON.stringify(settings));
+  try { localStorage.setItem('bac_settings_v2', JSON.stringify(settings)); } catch(e) {}
 }
 
 function loadShopData() {
