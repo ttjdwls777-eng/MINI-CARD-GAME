@@ -5,13 +5,14 @@
    ============================================================================ */
 
 var FIREBASE_CONFIG = {
-  apiKey: "AIzaSyBDJxn10EyQtGhJDemFA7pF-5QA-GGLW7Y",
+  apiKey: "AIzaSyBDJxnlOEyQtGhJDemFA7pF-5QA-GGlW7Y",
   authDomain: "xgp-minigame.firebaseapp.com",
   databaseURL: "https://xgp-minigame-default-rtdb.firebaseio.com",
   projectId: "xgp-minigame",
-  storageBucket: "xgp-minigame.appspot.com",
+  storageBucket: "xgp-minigame.firebasestorage.app",
   messagingSenderId: "712312742763",
-  appId: "1:712312742763:web:eef8675828aefe8c71222e"
+  appId: "1:712312742763:web:eef8675828aefe8c71222e",
+  measurementId: "G-LQVEQH5V81"
 };
 
 function firebaseOK(){
@@ -4142,16 +4143,27 @@ function saveSettings() {
 }
 
 function loadShopData() {
-  const stored = localStorage.getItem('bac_shop_v2');
-  if (stored) {
-    shopData = JSON.parse(stored);
-  } else {
-    shopData = {
-      owned: { avatars: [], tables: [], cardbacks: [], effects: [] },
-      equipped: { avatars: 'default', tables: 'default', cardbacks: 'default', effects: 'none' }
-    };
-    saveShopData();
+  var defaultShop = {
+    owned: { avatars: [], tables: [], cardbacks: [], effects: [] },
+    equipped: { avatars: 'default', tables: 'classic', cardbacks: 'red', effects: 'none' }
+  };
+  try {
+    var stored = localStorage.getItem('bac_shop_v2');
+    if (stored) {
+      var parsed = JSON.parse(stored);
+      shopData = { owned: {}, equipped: {} };
+      // Ensure all tabs exist in owned
+      ['avatars','tables','cardbacks','effects'].forEach(function(tab) {
+        shopData.owned[tab] = (parsed.owned && Array.isArray(parsed.owned[tab])) ? parsed.owned[tab] : [];
+        shopData.equipped[tab] = (parsed.equipped && parsed.equipped[tab]) ? parsed.equipped[tab] : defaultShop.equipped[tab];
+      });
+    } else {
+      shopData = defaultShop;
+    }
+  } catch(e) {
+    shopData = defaultShop;
   }
+  saveShopData();
 }
 
 function saveShopData() {
@@ -5208,36 +5220,51 @@ function renderDealerAvatar() {
 }
 
 function renderShop(tab) {
-  const grid = document.getElementById('shop-grid');
+  var grid = document.getElementById('shop-grid');
   if (!grid) return;
   grid.innerHTML = '';
 
-  const items = SHOP_ITEMS[tab] || [];
-  items.forEach(function(item) {
-    const owned = shopData.owned[tab].includes(item.id);
-    const equipped = shopData.equipped[tab] === item.id;
+  try {
+    // Update stars display in shop
+    var ss = document.getElementById('shop-stars');
+    if (ss) ss.textContent = formatNumber(profile.stars);
 
-    const card = document.createElement('div');
-    card.style.cssText = 'background:#2d1b4e;border:2px solid #3d2463;padding:16px;border-radius:8px;text-align:center';
-    if (equipped) {
-      card.style.border = '2px solid #d4af37';
-    }
+    var items = SHOP_ITEMS[tab] || [];
+    // Ensure shopData has the tab
+    if (!shopData || !shopData.owned) loadShopData();
+    if (!shopData.owned[tab]) shopData.owned[tab] = [];
+    if (!shopData.equipped[tab]) shopData.equipped[tab] = items.length > 0 ? items[0].id : '';
 
-    let html = '<div style="font-size:48px;margin-bottom:8px">' + item.emoji + '</div>';
-    html += '<div style="color:#e2e8f0;font-weight:bold;margin-bottom:4px">' + item.name + '</div>';
-    html += '<div style="color:#94a3b8;font-size:12px;margin-bottom:12px">' + (item.desc || item.name) + '</div>';
+    items.forEach(function(item) {
+      var owned = shopData.owned[tab].indexOf(item.id) !== -1;
+      var equipped = shopData.equipped[tab] === item.id;
+      // Default items (price 0) are always owned
+      if (item.price === 0) owned = true;
 
-    if (!owned && item.price) {
-      html += '<button data-action="buy-item" data-shop-tab="' + tab + '" data-item-id="' + item.id + '" style="background:#d4af37;color:#0f0a2a;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:bold;width:100%">' + formatNumber(item.price) + ' ⭐</button>';
-    } else if (owned && !equipped) {
-      html += '<button data-action="equip-item" data-shop-tab="' + tab + '" data-item-id="' + item.id + '" style="background:#4ade80;color:#0f0a2a;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:bold;width:100%">' + t('equip') + '</button>';
-    } else {
-      html += '<div style="background:#7c3aed;color:#e2e8f0;padding:8px 16px;border-radius:4px;font-weight:bold">' + t('equipped') + '</div>';
-    }
+      var card = document.createElement('div');
+      card.style.cssText = 'background:#2d1b4e;border:2px solid #3d2463;padding:16px;border-radius:8px;text-align:center';
+      if (equipped) {
+        card.style.border = '2px solid #d4af37';
+      }
 
-    card.innerHTML = html;
-    grid.appendChild(card);
-  });
+      var html = '<div style="font-size:48px;margin-bottom:8px">' + (item.emoji || '🎁') + '</div>';
+      html += '<div style="color:#e2e8f0;font-weight:bold;margin-bottom:4px">' + (item.name || item.id) + '</div>';
+
+      if (!owned && item.price > 0) {
+        html += '<div style="color:#d4af37;font-size:14px;margin-bottom:8px">' + formatNumber(item.price) + ' ⭐</div>';
+        html += '<button data-action="buy-item" data-shop-tab="' + tab + '" data-item-id="' + item.id + '" style="background:#d4af37;color:#0f0a2a;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:bold;width:100%">' + t('buy') + '</button>';
+      } else if (owned && !equipped) {
+        html += '<button data-action="equip-item" data-shop-tab="' + tab + '" data-item-id="' + item.id + '" style="background:#4ade80;color:#0f0a2a;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:bold;width:100%">' + t('equip') + '</button>';
+      } else if (equipped) {
+        html += '<div style="background:#7c3aed;color:#e2e8f0;padding:8px 16px;border-radius:4px;font-weight:bold">' + t('equipped') + '</div>';
+      }
+
+      card.innerHTML = html;
+      grid.appendChild(card);
+    });
+  } catch(e) {
+    grid.innerHTML = '<div style="color:#ff6b6b;padding:20px;text-align:center">Shop Error: ' + e.message + '</div>';
+  }
 }
 
 function renderDailyMissions() {
@@ -5638,57 +5665,63 @@ function saveHistory() {
 // ============================================================================
 
 function buyItem(category, itemId) {
-  const items = SHOP_ITEMS[category] || [];
-  const item = items.find(function(i) { return i.id === itemId; });
+  try {
+    var items = SHOP_ITEMS[category] || [];
+    var item = items.find(function(i) { return i.id === itemId; });
+    if (!item) return;
+    if (item.price > profile.stars) {
+      showToast(t('insufficient_stars'), 2000);
+      return;
+    }
+    if (!shopData.owned[category]) shopData.owned[category] = [];
+    if (shopData.owned[category].indexOf(itemId) !== -1) {
+      showToast(t('already_owned'), 2000);
+      return;
+    }
 
-  if (!item) return;
-  if (item.price > profile.stars) {
-    showToast(t('insufficient_stars'), 2000);
-    return;
-  }
-  if (shopData.owned[category].includes(itemId)) {
-    showToast(t('already_owned'), 2000);
-    return;
-  }
+    profile.stars -= item.price;
+    shopData.owned[category].push(itemId);
+    saveShopData();
+    saveProfile();
 
-  profile.stars -= item.price;
-  shopData.owned[category].push(itemId);
-  saveShopData();
-  saveProfile();
-
-  showToast(t('purchased'), 2000);
-  vibrate([100, 50, 100]);
-  updateAllUI();
-  renderShop(category);
+    showToast(t('purchased'), 2000);
+    vibrate([100, 50, 100]);
+    updateAllUI();
+    renderShop(category);
+  } catch(e) { showToast('Error: ' + e.message); }
 }
 
 function equipItem(category, itemId) {
-  const items = SHOP_ITEMS[category] || [];
-  const item = items.find(function(i) { return i.id === itemId; });
+  try {
+    var items = SHOP_ITEMS[category] || [];
+    var item = items.find(function(i) { return i.id === itemId; });
+    if (!item) return;
+    if (!shopData.owned[category]) shopData.owned[category] = [];
+    var isDefault = (item.price === 0);
+    if (!isDefault && shopData.owned[category].indexOf(itemId) === -1) {
+      showToast(t('not_owned'), 2000);
+      return;
+    }
 
-  if (!item) return;
-  if (!shopData.owned[category].includes(itemId) && item.id !== 'default') {
-    showToast(t('not_owned'), 2000);
-    return;
-  }
+    shopData.equipped[category] = itemId;
 
-  shopData.equipped[category] = itemId;
+    if (category === 'avatars') {
+      profile.avatar = itemId;
+    }
 
-  if (category === 'avatars') {
-    profile.avatar = itemId;
-  }
+    saveShopData();
+    saveProfile();
 
-  saveShopData();
-  saveProfile();
-
-  showToast(t('equipped'), 2000);
-  vibrate([100]);
-  renderShop(category);
-  renderProfileScreen();
+    showToast(t('equipped'), 2000);
+    vibrate([100]);
+    renderShop(category);
+    renderProfileScreen();
+  } catch(e) { showToast('Error: ' + e.message); }
 }
 
 function isItemOwned(category, itemId) {
-  return shopData.owned[category].includes(itemId) || itemId === 'default';
+  if (!shopData || !shopData.owned || !shopData.owned[category]) return itemId === 'default' || false;
+  return shopData.owned[category].indexOf(itemId) !== -1 || itemId === 'default';
 }
 
 function isItemEquipped(category, itemId) {
@@ -5706,12 +5739,14 @@ function submitScore() {
     var avatarItem = SHOP_ITEMS.avatars.find(function(a) { return a.id === (equippedAv || 'default'); });
     var avatarEmoji = avatarItem ? avatarItem.emoji : '😺';
 
+    var wr = profile.totalPlayed > 0 ? (profile.totalWins / profile.totalPlayed) : 0;
     firebase.database().ref('leaderboards/baccarat/' + profile.userId).set({
       nickname: profile.nickname,
       avatar: avatarEmoji,
       stars: profile.stars,
       totalWins: profile.totalWins,
       totalPlayed: profile.totalPlayed,
+      winRate: wr,
       timestamp: Date.now()
     }).catch(function(error) {
       console.error('Score submission failed:', error);
@@ -5723,19 +5758,23 @@ function submitScore() {
 
 function fetchRanking(tab) {
   if (!firebaseOK()) {
-    return Promise.resolve([]);
+    return Promise.resolve(getLocalRanking());
   }
 
-  return db.collection('leaderboards').doc('baccarat').collection('scores').orderBy('stars', 'desc').limit(100).get()
+  return firebase.database().ref('leaderboards/baccarat')
+    .orderByChild('stars')
+    .limitToLast(100)
+    .once('value')
     .then(function(snap) {
-      const results = [];
-      snap.forEach(function(doc) {
-        results.push(doc.val());
+      var results = [];
+      snap.forEach(function(child) {
+        results.push(child.val());
       });
-      return results;
+      results.sort(function(a, b) { return (b.stars || 0) - (a.stars || 0); });
+      return results.length > 0 ? results : getLocalRanking();
     })
     .catch(function() {
-      return [];
+      return getLocalRanking();
     });
 }
 
@@ -6338,31 +6377,34 @@ function setupListeners() {
     if (action === 'play-online') {
       playSound('click');
       showOverlay('room-panel');
+      // Hide the static no-rooms message while loading
+      var noRoomsEl = document.getElementById('no-rooms');
+      if (noRoomsEl) noRoomsEl.style.display = 'none';
+      var list = document.getElementById('room-list');
+      if (list) list.innerHTML = '<div style="color:#94a3b8;padding:16px;text-align:center">' + t('loading') + '...</div>';
       Online.getOpenRooms().then(function(rooms) {
-        const list = document.getElementById('room-list');
         if (!list) return;
         list.innerHTML = '';
         if (rooms.length === 0) {
-          list.innerHTML = '<div style="color:#94a3b8;padding:16px;text-align:center">' + t('no_rooms') + '</div>';
+          if (noRoomsEl) noRoomsEl.style.display = '';
+          list.innerHTML = '';
           return;
         }
+        if (noRoomsEl) noRoomsEl.style.display = 'none';
         rooms.forEach(function(room) {
-          const card = document.createElement('div');
+          var card = document.createElement('div');
           card.style.cssText = 'background:#2d1b4e;border:2px solid #3d2463;padding:12px;border-radius:8px;margin-bottom:8px;cursor:pointer';
-          card.onclick = function() {
-            Online.joinRoom(room.code).then(function() {
-              showToast(t('joined_room'), 2000);
-              hideOverlay('room-panel');
-            }).catch(function() {
-              showToast(t('join_failed'), 2000);
-            });
-          };
-          let html = '<div style="color:#d4af37;font-weight:bold">' + room.title + '</div>';
-          html += '<div style="color:#94a3b8;font-size:12px;margin:4px 0">' + t('host') + ': ' + room.hostName + '</div>';
-          html += '<div style="color:#94a3b8;font-size:12px">' + Object.keys(room.players || {}).length + ' / ' + room.maxPlayers + ' ' + t('players') + ' | ' + t('wager') + ': ' + formatNumber(room.wager) + '</div>';
+          card.setAttribute('data-action', 'join-room');
+          card.setAttribute('data-room-code', room.code);
+          var html = '<div style="color:#d4af37;font-weight:bold">' + (room.title || 'Room') + '</div>';
+          html += '<div style="color:#94a3b8;font-size:12px;margin:4px 0">' + t('host') + ': ' + (room.hostName || 'Host') + '</div>';
+          html += '<div style="color:#94a3b8;font-size:12px">' + Object.keys(room.players || {}).length + ' / ' + (room.maxPlayers || 8) + ' ' + t('players') + ' | ' + t('wager') + ': ' + formatNumber(room.wager || 0) + '</div>';
           card.innerHTML = html;
           list.appendChild(card);
         });
+      }).catch(function() {
+        if (list) list.innerHTML = '';
+        if (noRoomsEl) noRoomsEl.style.display = '';
       });
       return;
     }
