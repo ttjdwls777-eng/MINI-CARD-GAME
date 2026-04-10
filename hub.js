@@ -1,6 +1,54 @@
 (function(){
 'use strict';
 
+// ==================== FIREBASE SDK DYNAMIC LOADER ====================
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBDJxn10EyQtGhJDemFA7pF-5QA-GGLW7Y",
+  authDomain: "xgp-minigame.firebaseapp.com",
+  databaseURL: "https://xgp-minigame-default-rtdb.firebaseio.com",
+  projectId: "xgp-minigame",
+  storageBucket: "xgp-minigame.appspot.com",
+  messagingSenderId: "712312742763",
+  appId: "1:712312742763:web:eef8675828aefe8c71222e",
+  measurementId: "G-LQVEQH5V81"
+};
+
+function loadScript(src) {
+  return new Promise(function(resolve, reject) {
+    if (document.querySelector('script[src="' + src + '"]')) { resolve(); return; }
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = function() { console.warn('Failed to load: ' + src); resolve(); };
+    document.head.appendChild(s);
+  });
+}
+
+async function ensureFirebase() {
+  try {
+    if (typeof firebase === 'undefined' || !firebase.app) {
+      await loadScript('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js');
+    }
+    if (typeof firebase !== 'undefined' && !firebase.auth) {
+      await loadScript('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js');
+    }
+    if (typeof firebase !== 'undefined' && !firebase.database) {
+      await loadScript('https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js');
+    }
+    if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length === 0) {
+      firebase.initializeApp(FIREBASE_CONFIG);
+    }
+    return typeof firebase !== 'undefined' && !!firebase.database;
+  } catch (e) {
+    console.warn('Firebase init failed:', e);
+    return false;
+  }
+}
+
+function firebaseAvailable() {
+  return typeof firebase !== 'undefined' && !!firebase.database;
+}
+
 const STARTING_STARS = 10000;
 const DAILY_BONUS = 100;
 const CHIPS = [50, 100, 500, 1000, 5000, 10000];
@@ -4320,7 +4368,7 @@ async function dealRound() {
       playerScore: cardScore(playerCards),
       bankerScore: cardScore(bankerCards),
       winner: gameState.currentBet === result ? profile.userId : 'other',
-      timestamp: firebase.database.ServerValue.TIMESTAMP
+      timestamp: (firebaseAvailable() ? firebase.database.ServerValue.TIMESTAMP : Date.now())
     });
   }
 
@@ -5062,7 +5110,7 @@ const Online = {
         avatar: shopData.equippedAvatar,
         stars: profile.stars,
         online: true,
-        lastSeen: firebase.database.ServerValue.TIMESTAMP
+        lastSeen: (firebaseAvailable() ? firebase.database.ServerValue.TIMESTAMP : Date.now())
       });
       presRef.onDisconnect().remove();
     } catch(e) {
@@ -5113,7 +5161,7 @@ const Online = {
           bankerCards: [],
           result: null
         },
-        createdAt: firebase.database.ServerValue.TIMESTAMP
+        createdAt: (firebaseAvailable() ? firebase.database.ServerValue.TIMESTAMP : Date.now())
       });
 
       this.roomCode = code;
@@ -5313,7 +5361,7 @@ const Online = {
         stars: profile.stars,
         wins: profile.todayWins,
         played: profile.todayGames,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        timestamp: (firebaseAvailable() ? firebase.database.ServerValue.TIMESTAMP : Date.now()),
         weekStart: weekStart
       });
 
@@ -5324,7 +5372,7 @@ const Online = {
         stars: profile.stars,
         wins: profile.totalWins,
         played: profile.totalPlayed,
-        timestamp: firebase.database.ServerValue.TIMESTAMP
+        timestamp: (firebaseAvailable() ? firebase.database.ServerValue.TIMESTAMP : Date.now())
       });
     } catch(e) {
       console.warn('Error updating leaderboard:', e);
@@ -6416,11 +6464,19 @@ function init() {
     checkWeeklyReset();
     resetDailyMissions();
 
-    Online.ready().then(() => {
-      Online.goOnline();
+    showScreen('home');
+
+    // Load Firebase AFTER UI is ready (non-blocking)
+    ensureFirebase().then(function(ok) {
+      if (ok) {
+        Online.ready().then(function() {
+          Online.goOnline();
+        });
+      } else {
+        console.warn('Firebase not available - AI mode only');
+      }
     });
 
-    showScreen('home');
   } catch(e) {
     console.error('init error:', e);
   }
