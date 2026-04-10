@@ -6482,11 +6482,32 @@ function init() {
   }
 }
 
-// Wait for DOM ready (same pattern as hub.js)
+// Safe startup with visual error reporting
+function safeStart() {
+  try {
+    // Show immediate loading indicator
+    document.body.style.cssText = 'margin:0;padding:0;width:100%;height:100%;background:#0a0e17;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;';
+    document.body.innerHTML = '<div style="text-align:center;"><div style="font-size:48px;margin-bottom:16px;">🎰</div><div style="font-size:18px;color:#d4af37;">Loading FA Baccarat...</div></div>';
+
+    // Run init after a tiny delay to let loading screen render
+    setTimeout(function() {
+      try {
+        document.body.innerHTML = '';
+        document.body.style.cssText = '';
+        init();
+      } catch(e) {
+        document.body.innerHTML = '<div style="padding:20px;color:#ff4444;font-family:monospace;background:#111;min-height:100vh;"><h2 style="color:#d4af37;">FA Baccarat Error</h2><pre style="white-space:pre-wrap;word-break:break-all;margin-top:16px;color:#ff6b6b;">' + e.message + '\n\n' + (e.stack||'') + '</pre></div>';
+      }
+    }, 50);
+  } catch(e2) {
+    alert('Baccarat load error: ' + e2.message);
+  }
+}
+
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', safeStart);
 } else {
-  init();
+  safeStart();
 }
 
 })();
