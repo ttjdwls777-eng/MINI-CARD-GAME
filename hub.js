@@ -213,22 +213,22 @@ const I18N = {
     create_room: 'Create Room',
     join_room: 'Join',
     online_count: 'Online',
-    tut_step1: 'Welcome to Baccarat',
-    tut_step1_desc: 'The goal is to bet on Player, Banker, or Tie. Cards closer to 9 wins!',
+    tut_step1: 'Welcome to FA Baccarat',
+    tut_step1_desc: 'Baccarat is one of the most popular casino card games. The goal is simple: bet on which hand — Player or Banker — will have a total closest to 9. You can also bet on a Tie or Pairs.',
     tut_step2: 'Card Values',
-    tut_step2_desc: 'Ace=1, 2-9=face value, 10/J/Q/K=0. Only last digit counts.',
+    tut_step2_desc: 'Ace = 1 point. Cards 2-9 = face value. 10, Jack, Queen, King = 0 points. Only the last digit of the total counts. For example: 7 + 8 = 15 → score is 5.',
     tut_step3: 'How to Bet',
-    tut_step3_desc: 'Select a chip value, tap a betting zone, then deal to play.',
-    tut_step4: 'Game Rules',
-    tut_step4_desc: 'Each gets 2 cards. Total closest to 9 wins. Ties pay 8:1.',
-    tut_step5: 'Winning Tips',
-    tut_step5_desc: 'Banker has slight advantage. Watch the shoe for patterns.',
+    tut_step3_desc: 'Tap chip buttons (100, 500, 1000, 10000) to add to your bet amount. Then tap a betting zone (Player, Banker, Tie, P.Pair, B.Pair). Press BET to confirm.',
+    tut_step4: 'Punto Banco Rules',
+    tut_step4_desc: 'Player and Banker each receive 2 cards. If either has 8 or 9 (Natural), no more cards are drawn. Otherwise: Player draws on 0-5. Banker draw depends on own score and Player third card.',
+    tut_step5: 'Payouts',
+    tut_step5_desc: 'Player bet pays 2x. Banker bet pays 1.95x (5% commission). Tie pays 9x. Player Pair and Banker Pair pay 12x each.',
     tut_step6: 'Pair Bets',
-    tut_step6_desc: 'Bet on Player or Banker getting a pair. Pays 11:1.',
-    tut_step7: 'Road Patterns',
-    tut_step7_desc: 'Track results with Big Road and Bead Plate patterns.',
+    tut_step6_desc: 'A Pair bet wins when the first two cards dealt to Player (or Banker) are the same rank. Example: two Kings or two 7s. Pair bets pay 12:1!',
+    tut_step7: 'Road Map Patterns',
+    tut_step7_desc: 'The Road Map tracks past results to help spot trends. Big Road shows columns of wins. Bead Plate records each result in order. Use patterns to guide your bets.',
     tut_step8: 'Pro Tips',
-    tut_step8_desc: 'Manage bankroll. Never chase losses. Enjoy the game!'
+    tut_step8_desc: 'Banker has a slight statistical edge (45.86% vs 44.62%). Set a win/loss limit before playing. Never chase losses. The house edge on Tie is high — bet wisely!'
   },
 
   ko: {
@@ -324,22 +324,22 @@ const I18N = {
     create_room: '룸 생성',
     join_room: '참가',
     online_count: '온라인',
-    tut_step1: '바카라 환영합니다',
-    tut_step1_desc: '플레이어, 뱅커, 타이에 베팅하세요. 9에 가까운 카드가 이깁니다!',
+    tut_step1: 'FA 바카라에 오신 것을 환영합니다',
+    tut_step1_desc: '바카라는 가장 인기 있는 카지노 카드 게임입니다. 플레이어 또는 뱅커 중 어느 쪽의 합이 9에 가까운지 맞추는 게임입니다. 타이나 페어에도 베팅할 수 있습니다.',
     tut_step2: '카드 값',
-    tut_step2_desc: 'A=1, 2-9=숫자, 10/J/Q/K=0. 끝자리만 계산됩니다.',
+    tut_step2_desc: 'A = 1점. 2-9 = 숫자 그대로. 10, J, Q, K = 0점. 합계의 끝자리만 계산됩니다. 예: 7 + 8 = 15 → 점수는 5.',
     tut_step3: '베팅 방법',
-    tut_step3_desc: '칩을 선택하고, 베팅 지역을 탭한 후 딜을 누르세요.',
-    tut_step4: '게임 규칙',
-    tut_step4_desc: '각각 2장의 카드를 받습니다. 9에 가장 가까운 쪽이 이깁니다.',
-    tut_step5: '승리 팁',
-    tut_step5_desc: '뱅커가 약간의 이점이 있습니다. 슈의 패턴을 관찰하세요.',
-    tut_step6: '쌍 베팅',
-    tut_step6_desc: '플레이어나 뱅커가 쌍을 받는 것에 베팅하세요. 11:1 지급.',
-    tut_step7: '로드 패턴',
-    tut_step7_desc: '빅로드와 비드플레이트로 결과를 추적하세요.',
+    tut_step3_desc: '칩 버튼(100, 500, 1000, 10000)을 눌러 베팅 금액을 추가하세요. 그 다음 베팅 존(플레이어, 뱅커, 타이, P.페어, B.페어)을 선택하고 BET을 누르세요.',
+    tut_step4: '푼토 방코 규칙',
+    tut_step4_desc: '플레이어와 뱅커 각각 카드 2장을 받습니다. 8 또는 9(내추럴)이면 추가 카드 없음. 그 외: 플레이어는 0-5에서 드로우. 뱅커 드로우는 자신의 점수와 플레이어 세 번째 카드에 따라 결정.',
+    tut_step5: '배당률',
+    tut_step5_desc: '플레이어 베팅: 2배. 뱅커 베팅: 1.95배 (5% 커미션). 타이: 9배. 플레이어 페어/뱅커 페어: 각 12배.',
+    tut_step6: '페어 베팅',
+    tut_step6_desc: '페어 베팅은 처음 2장의 카드가 같은 숫자일 때 승리합니다. 예: 킹 2장 또는 7 2장. 페어 베팅 배당률은 12:1입니다!',
+    tut_step7: '로드맵 패턴',
+    tut_step7_desc: '로드맵은 과거 결과를 추적하여 추세를 파악합니다. 빅로드는 승리 열을 표시합니다. 비드 플레이트는 각 결과를 순서대로 기록합니다.',
     tut_step8: '프로 팁',
-    tut_step8_desc: '자금을 관리하세요. 손실을 쫓지 마세요. 게임을 즐기세요!'
+    tut_step8_desc: '뱅커가 통계적으로 약간 유리합니다 (45.86% vs 44.62%). 플레이 전에 승/패 한도를 설정하세요. 손실을 쫓지 마세요. 타이의 하우스 엣지는 높습니다!'
   },
 
   ja: {
@@ -435,22 +435,22 @@ const I18N = {
     create_room: 'ルーム作成',
     join_room: '参加',
     online_count: 'オンライン',
-    tut_step1: 'バカラへようこそ',
-    tut_step1_desc: 'プレイヤー、バンカー、またはタイに賭けます。9に近いカードが勝ちます!',
-    tut_step2: 'カード値',
-    tut_step2_desc: 'A=1、2-9=数字、10/J/Q/K=0。一の位のみ計算。',
-    tut_step3: 'ベット方法',
-    tut_step3_desc: 'チップを選択し、ベッティングゾーンをタップしてディール。',
-    tut_step4: 'ゲーム規則',
-    tut_step4_desc: '各自2枚のカードを受け取ります。9に最も近い方が勝ち。',
-    tut_step5: '勝利のコツ',
-    tut_step5_desc: 'バンカーは若干有利です。シューのパターンを観察しましょう。',
+    tut_step1: 'FA バカラへようこそ',
+    tut_step1_desc: 'バカラは最も人気のあるカジノカードゲームです。プレイヤーとバンカーのどちらが9に近いか予想して賭けます。タイやペアにも賭けられます。',
+    tut_step2: 'カードの値',
+    tut_step2_desc: 'A=1点、2-9=数字通り、10/J/Q/K=0点。合計の下一桁のみ有効。例：7+8=15→スコアは5。',
+    tut_step3: '賭け方',
+    tut_step3_desc: 'チップボタン（100、500、1000、10000）をタップして金額を追加。ベットゾーンを選んでBETを押してください。',
+    tut_step4: 'プントバンコルール',
+    tut_step4_desc: 'プレイヤーとバンカーに各2枚配布。8か9（ナチュラル）なら追加なし。それ以外：プレイヤーは0-5でドロー。バンカーのドローは条件付き。',
+    tut_step5: '配当',
+    tut_step5_desc: 'プレイヤー：2倍、バンカー：1.95倍（5%手数料）、タイ：9倍、ペア：12倍。',
     tut_step6: 'ペアベット',
-    tut_step6_desc: 'プレイヤーまたはバンカーがペアを得ることに賭けます。11:1配当。',
-    tut_step7: 'ロードパターン',
-    tut_step7_desc: 'ビッグロードとビーズプレートで結果を追跡します。',
+    tut_step6_desc: '最初の2枚が同じランクならペアベット的中。例：キング2枚や7が2枚。配当は12:1！',
+    tut_step7: 'ロードマップ',
+    tut_step7_desc: 'ロードマップで過去の結果を追跡。ビッグロードは勝利の列を表示。ビードプレートは結果を順番に記録します。',
     tut_step8: 'プロのコツ',
-    tut_step8_desc: '資金を管理します。損失を追いかけないでください。楽しんでください!'
+    tut_step8_desc: 'バンカーが統計的にやや有利（45.86% vs 44.62%）。プレイ前に勝敗制限を設定。負けを追わないこと！'
   },
 
   zh: {
@@ -546,22 +546,22 @@ const I18N = {
     create_room: '创建房间',
     join_room: '加入',
     online_count: '在线',
-    tut_step1: '欢迎来到百家乐',
-    tut_step1_desc: '在闲家、庄家或平手上下注。最接近9的卡牌获胜!',
-    tut_step2: '卡牌价值',
-    tut_step2_desc: 'A=1、2-9=数字、10/J/Q/K=0。仅计算个位数。',
-    tut_step3: '下注方式',
-    tut_step3_desc: '选择筹码，点击下注区域，然后点击发牌。',
-    tut_step4: '游戏规则',
-    tut_step4_desc: '各方获得2张卡牌。最接近9者获胜。平手赔8:1。',
-    tut_step5: '获胜提示',
-    tut_step5_desc: '庄家略占优势。观察靴子中的图案。',
+    tut_step1: '欢迎来到FA百家乐',
+    tut_step1_desc: '百家乐是最受欢迎的赌场纸牌游戏。目标很简单：押注哪一方——闲家或庄家——的总点数最接近9。',
+    tut_step2: '牌值',
+    tut_step2_desc: 'A=1分，2-9=面值，10/J/Q/K=0分。只取总和的个位数。例：7+8=15→得分为5。',
+    tut_step3: '如何下注',
+    tut_step3_desc: '点击筹码按钮（100、500、1000、10000）累加金额，选择下注区域，按BET确认。',
+    tut_step4: '规则',
+    tut_step4_desc: '闲庄各发2张。有8或9（天牌）不再发牌。否则：闲家0-5补牌，庄家视情况而定。',
+    tut_step5: '赔率',
+    tut_step5_desc: '闲家2倍，庄家1.95倍（5%佣金），和局9倍，对子12倍。',
     tut_step6: '对子下注',
-    tut_step6_desc: '下注闲家或庄家获得对子。赔11:1。',
-    tut_step7: '路线图案',
-    tut_step7_desc: '用大路和珠盘追踪结果。',
-    tut_step8: '专业提示',
-    tut_step8_desc: '管理资金。不要追逐损失。享受游戏!'
+    tut_step6_desc: '首2张牌相同即中对子。例：两张K或两张7。赔率12:1！',
+    tut_step7: '路图',
+    tut_step7_desc: '路图追踪历史结果，帮助发现趋势。大路显示胜利列，珠盘按顺序记录结果。',
+    tut_step8: '专业建议',
+    tut_step8_desc: '庄家略占优势（45.86% vs 44.62%）。设定赢/输上限，切勿追输！'
   },
 
   vi: {
@@ -657,22 +657,22 @@ const I18N = {
     create_room: 'Tạo phòng',
     join_room: 'Tham gia',
     online_count: 'Trực tuyến',
-    tut_step1: 'Chào mừng đến Baccarat',
-    tut_step1_desc: 'Đặt cược vào Người chơi, Nhà cái hoặc Hòa. Lá gần 9 nhất thắng!',
-    tut_step2: 'Giá trị thẻ',
-    tut_step2_desc: 'A=1, 2-9=giá trị, 10/J/Q/K=0. Chỉ tính chữ số cuối cùng.',
+    tut_step1: 'Chào mừng đến FA Baccarat',
+    tut_step1_desc: 'Baccarat là trò chơi bài casino phổ biến nhất. Đặt cược xem bên nào — Player hay Banker — có tổng điểm gần 9 nhất.',
+    tut_step2: 'Giá trị lá bài',
+    tut_step2_desc: 'A=1, 2-9=mệnh giá, 10/J/Q/K=0. Chỉ tính hàng đơn vị. VD: 7+8=15→điểm là 5.',
     tut_step3: 'Cách đặt cược',
-    tut_step3_desc: 'Chọn chip, chạm vào vùng cược, rồi phát để chơi.',
+    tut_step3_desc: 'Nhấn chip (100, 500, 1000, 10000) để cộng dồn. Chọn vùng cược rồi nhấn BET.',
     tut_step4: 'Luật chơi',
-    tut_step4_desc: 'Mỗi người nhận 2 lá. Lá gần 9 nhất thắng. Hòa trả 8:1.',
-    tut_step5: 'Mẹo chiến thắng',
-    tut_step5_desc: 'Nhà cái có lợi thế nhỏ. Quan sát các mẫu trong giày.',
-    tut_step6: 'Cược cặp',
-    tut_step6_desc: 'Đặt cược vào Người chơi hoặc Nhà cái nhận cặp. Trả 11:1.',
-    tut_step7: 'Mẫu đường',
-    tut_step7_desc: 'Theo dõi kết quả với Đường lớn và Bảng hạt.',
+    tut_step4_desc: 'Player và Banker nhận 2 lá. Nếu có 8/9 (Natural) thì dừng. Player rút thêm khi 0-5. Banker tùy điều kiện.',
+    tut_step5: 'Tỷ lệ thưởng',
+    tut_step5_desc: 'Player: x2, Banker: x1.95 (hoa hồng 5%), Hòa: x9, Đôi: x12.',
+    tut_step6: 'Cược đôi',
+    tut_step6_desc: 'Thắng khi 2 lá đầu cùng hạng. VD: hai K hoặc hai 7. Thưởng 12:1!',
+    tut_step7: 'Bản đồ kết quả',
+    tut_step7_desc: 'Theo dõi kết quả qua Road Map. Big Road hiển thị xu hướng thắng.',
     tut_step8: 'Mẹo chuyên nghiệp',
-    tut_step8_desc: 'Quản lý ngân sách. Đừng bắt kịp thua lỗ. Thưởng thức trò chơi!'
+    tut_step8_desc: 'Banker có lợi thế nhẹ (45.86% vs 44.62%). Đặt giới hạn thắng/thua trước khi chơi!'
   },
 
   th: {
@@ -768,22 +768,22 @@ const I18N = {
     create_room: 'สร้างห้อง',
     join_room: 'เข้าร่วม',
     online_count: 'ออนไลน์',
-    tut_step1: 'ยินดีต้อนรับสู่บาคาร่า',
-    tut_step1_desc: 'เดิมพันผู้เล่น เจ้ามือ หรือเสมอ ไพ่ที่ใกล้ 9 มากที่สุดชนะ!',
-    tut_step2: 'มูลค่าการ์ด',
-    tut_step2_desc: 'A=1, 2-9=ค่า, 10/J/Q/K=0 นับเฉพาะตัวเลขสุดท้าย',
+    tut_step1: 'ยินดีต้อนรับสู่ FA Baccarat',
+    tut_step1_desc: 'บาคาร่าเป็นเกมไพ่คาสิโนที่ได้รับความนิยมมากที่สุด เดิมพันว่าฝ่ายใด Player หรือ Banker จะมีแต้มใกล้ 9 มากกว่า',
+    tut_step2: 'ค่าไพ่',
+    tut_step2_desc: 'A=1, 2-9=ตามหน้า, 10/J/Q/K=0 นับเฉพาะหลักหน่วย เช่น 7+8=15→แต้ม 5',
     tut_step3: 'วิธีเดิมพัน',
-    tut_step3_desc: 'เลือกชิป แตะเขตเดิมพัน จากนั้นแจกเพื่อเล่น',
+    tut_step3_desc: 'กดชิป (100, 500, 1000, 10000) สะสมยอด เลือกช่องเดิมพันแล้วกด BET',
     tut_step4: 'กฎเกม',
-    tut_step4_desc: 'แต่ละฝ่ายได้ 2 ใบ ใบที่ใกล้ 9 มากที่สุดชนะ เสมอจ่าย 8:1',
-    tut_step5: 'เคล็ดลับการชนะ',
-    tut_step5_desc: 'เจ้ามือมีข้อได้เปรียบเล็กน้อย ดูแบบรองเท้า',
+    tut_step4_desc: 'แจก 2 ใบ ถ้าได้ 8/9 (Natural) หยุด Player จั่วเมื่อ 0-5 Banker ขึ้นกับเงื่อนไข',
+    tut_step5: 'อัตราจ่าย',
+    tut_step5_desc: 'Player: x2, Banker: x1.95 (ค่าคอม 5%), เสมอ: x9, คู่: x12',
     tut_step6: 'เดิมพันคู่',
-    tut_step6_desc: 'เดิมพันผู้เล่นหรือเจ้ามือได้คู่ จ่าย 11:1',
-    tut_step7: 'รูปแบบเส้นทาง',
-    tut_step7_desc: 'ติดตามผลลัพธ์ด้วยเส้นทางใหญ่และจานลูกปัด',
-    tut_step8: 'เคล็ดลับมืออาชีพ',
-    tut_step8_desc: 'จัดการทุน อย่าไล่ความสูญเสีย เพลิดเพลินไปกับเกม!'
+    tut_step6_desc: 'ชนะเมื่อ 2 ใบแรกเป็นคู่เดียวกัน เช่น K สองใบ จ่าย 12:1!',
+    tut_step7: 'แผนที่ผล',
+    tut_step7_desc: 'ติดตามผลด้วย Road Map เพื่อดูแนวโน้ม Big Road แสดงคอลัมน์ชนะ',
+    tut_step8: 'เคล็ดลับ',
+    tut_step8_desc: 'Banker ได้เปรียบเล็กน้อย (45.86% vs 44.62%) ตั้งวงเงินก่อนเล่น อย่าไล่ตามการเสีย!'
   },
 
   id: {
@@ -879,22 +879,22 @@ const I18N = {
     create_room: 'Buat Ruangan',
     join_room: 'Bergabung',
     online_count: 'Online',
-    tut_step1: 'Selamat Datang di Baccarat',
-    tut_step1_desc: 'Pertaruhkan pada Pemain, Bankir, atau Seri. Kartu terdekat 9 menang!',
+    tut_step1: 'Selamat datang di FA Baccarat',
+    tut_step1_desc: 'Baccarat adalah permainan kartu kasino paling populer. Tebak sisi mana yang totalnya paling dekat 9.',
     tut_step2: 'Nilai Kartu',
-    tut_step2_desc: 'A=1, 2-9=nilai, 10/J/Q/K=0. Hanya hitung digit terakhir.',
+    tut_step2_desc: 'A=1, 2-9=nilai nominal, 10/J/Q/K=0. Hanya digit terakhir. Contoh: 7+8=15→skor 5.',
     tut_step3: 'Cara Bertaruh',
-    tut_step3_desc: 'Pilih chip, ketuk zona taruhan, lalu bagikan untuk bermain.',
-    tut_step4: 'Aturan Permainan',
-    tut_step4_desc: 'Masing-masing mendapat 2 kartu. Terdekat 9 menang. Seri membayar 8:1.',
-    tut_step5: 'Tip Menang',
-    tut_step5_desc: 'Bankir memiliki keuntungan kecil. Amati pola di sepatu.',
-    tut_step6: 'Taruhan Pasang',
-    tut_step6_desc: 'Pertaruhkan Pemain atau Bankir mendapat pasang. Bayar 11:1.',
-    tut_step7: 'Pola Jalan',
-    tut_step7_desc: 'Lacak hasil dengan Jalan Besar dan Piring Manik.',
-    tut_step8: 'Tip Profesional',
-    tut_step8_desc: 'Kelola bankroll. Jangan kejar kerugian. Nikmati permainan!'
+    tut_step3_desc: 'Tekan chip (100, 500, 1000, 10000) untuk menambah taruhan. Pilih zona lalu tekan BET.',
+    tut_step4: 'Aturan',
+    tut_step4_desc: 'Masing-masing dapat 2 kartu. Jika ada 8/9 (Natural) berhenti. Player draw pada 0-5. Banker tergantung kondisi.',
+    tut_step5: 'Pembayaran',
+    tut_step5_desc: 'Player: x2, Banker: x1.95 (komisi 5%), Seri: x9, Pair: x12.',
+    tut_step6: 'Taruhan Pair',
+    tut_step6_desc: 'Menang jika 2 kartu pertama sama. Contoh: dua K atau dua 7. Bayar 12:1!',
+    tut_step7: 'Peta Jalan',
+    tut_step7_desc: 'Lacak hasil dengan Road Map. Big Road menampilkan kolom kemenangan.',
+    tut_step8: 'Tips Pro',
+    tut_step8_desc: 'Banker sedikit lebih unggul (45.86% vs 44.62%). Tetapkan batas menang/kalah sebelum bermain!'
   }
 };
 
@@ -1536,23 +1536,36 @@ body::before {
   background: linear-gradient(180deg, var(--felt-dark) 0%, var(--felt-color) 100%);
   border: 2px solid var(--primary);
   border-radius: 12px;
-  padding: 8px 6px;
+  padding: 12px 10px;
   box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 15px rgba(212,175,55,0.2);
-  min-height: 140px;
+  min-height: 260px;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 6px;
+  flex-direction: column;
+  gap: 8px;
   overflow: hidden;
   width: 100%;
+  position: relative;
 }
 
 .player-side,
 .banker-side {
-  flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.banker-side {
+  justify-content: flex-end;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+.player-side {
+  justify-content: flex-start;
+  background: rgba(0,180,216,0.08);
+  border: 1px solid rgba(0,180,216,0.2);
 }
 
 .player-side .label,
@@ -1590,10 +1603,10 @@ body::before {
 
 .vs-center {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 12px;
+  padding: 2px 0;
 }
 
 .vs-text {
@@ -3465,21 +3478,21 @@ function boot() {
         
         <!-- Card Display Area -->
         <div class="card-display-area">
-          <div class="player-side">
-            <div class="label" data-i18n="player">PLAYER</div>
-            <div class="card-slots" id="player-cards"></div>
-            <div class="score-display" id="player-score">0</div>
-          </div>
-          
-          <div class="vs-center">
-            <div class="vs-text" data-i18n="app_title">FA</div>
-            <div class="result-banner" id="result-banner" style="display:none;"></div>
-          </div>
-          
           <div class="banker-side">
-            <div class="label" data-i18n="banker">BANKER</div>
-            <div class="card-slots" id="banker-cards"></div>
-            <div class="score-display" id="banker-score">0</div>
+            <div class="score-display" id="banker-score" style="min-width:28px;text-align:center;">0</div>
+            <div class="label" data-i18n="banker" style="writing-mode:horizontal-tb;">BANKER</div>
+            <div class="card-slots" id="banker-cards" style="flex:1;justify-content:flex-end;"></div>
+          </div>
+
+          <div class="vs-center">
+            <div class="result-banner" id="result-banner" style="display:none;"></div>
+            <div class="vs-text" style="color:#d4af37;font-size:12px;font-weight:700;">VS</div>
+          </div>
+
+          <div class="player-side">
+            <div class="card-slots" id="player-cards" style="flex:1;"></div>
+            <div class="label" data-i18n="player" style="writing-mode:horizontal-tb;">PLAYER</div>
+            <div class="score-display" id="player-score" style="min-width:28px;text-align:center;">0</div>
           </div>
         </div>
         
@@ -4266,31 +4279,81 @@ function playSound(type) {
   if (!ctx) return;
 
   const now = ctx.currentTime;
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
+
+  if (type === 'win') {
+    // Victory fanfare - ascending chord
+    [523, 659, 784, 1047].forEach(function(freq, i) {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'triangle';
+      gain.gain.setValueAtTime(0.25, now + i * 0.12);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.12 + 0.4);
+      osc.start(now + i * 0.12);
+      osc.stop(now + i * 0.12 + 0.4);
+    });
+    return;
+  }
+
+  if (type === 'lose') {
+    // Sad descending tone
+    [400, 350, 280].forEach(function(freq, i) {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.2, now + i * 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.15 + 0.3);
+      osc.start(now + i * 0.15);
+      osc.stop(now + i * 0.15 + 0.3);
+    });
+    return;
+  }
+
+  if (type === 'natural') {
+    // Exciting natural reveal
+    [880, 1100, 880, 1320].forEach(function(freq, i) {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'triangle';
+      gain.gain.setValueAtTime(0.2, now + i * 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.3);
+      osc.start(now + i * 0.08);
+      osc.stop(now + i * 0.08 + 0.3);
+    });
+    return;
+  }
+
+  if (type === 'chip') {
+    // Chip click - crisp tick
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = 1200;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+    osc.start(now);
+    osc.stop(now + 0.06);
+    return;
+  }
+
+  // Default sounds
+  const freqs = { deal: 600, flip: 900, click: 500 };
+  const durations = { deal: 0.15, flip: 0.08, click: 0.05 };
+
+  var osc = ctx.createOscillator();
+  var gain = ctx.createGain();
   osc.connect(gain);
   gain.connect(ctx.destination);
-
-  const freqs = {
-    chip: 800,
-    deal: 600,
-    flip: 900,
-    win: 1200,
-    lose: 300,
-    natural: 1400,
-    click: 500
-  };
-
-  const durations = {
-    chip: 0.1,
-    deal: 0.15,
-    flip: 0.08,
-    win: 0.3,
-    lose: 0.2,
-    natural: 0.4,
-    click: 0.05
-  };
-
   osc.frequency.value = freqs[type] || 500;
   gain.gain.setValueAtTime(0.3, now);
   gain.gain.exponentialRampToValueAtTime(0.01, now + (durations[type] || 0.1));
@@ -5755,29 +5818,39 @@ function renderSettingsState() {
 // SECTION 19: Tutorial (~120 lines)
 // ============================================================================
 
-const TUTORIAL_STEPS = [
-  { step: 0, title: t('tut_welcome'), desc: t('tut_welcome_desc') },
-  { step: 1, title: t('tut_betting'), desc: t('tut_betting_desc') },
-  { step: 2, title: t('tut_cards'), desc: t('tut_cards_desc') },
-  { step: 3, title: t('tut_rules'), desc: t('tut_rules_desc') },
-  { step: 4, title: t('tut_payouts'), desc: t('tut_payouts_desc') },
-  { step: 5, title: t('tut_roadmaps'), desc: t('tut_roadmaps_desc') },
-  { step: 6, title: t('tut_shop'), desc: t('tut_shop_desc') },
-  { step: 7, title: t('tut_missions'), desc: t('tut_missions_desc') }
-];
+function getTutorialSteps() {
+  return [
+    { title: t('tut_step1'), desc: t('tut_step1_desc') },
+    { title: t('tut_step2'), desc: t('tut_step2_desc') },
+    { title: t('tut_step3'), desc: t('tut_step3_desc') },
+    { title: t('tut_step4'), desc: t('tut_step4_desc') },
+    { title: t('tut_step5'), desc: t('tut_step5_desc') },
+    { title: t('tut_step6'), desc: t('tut_step6_desc') },
+    { title: t('tut_step7'), desc: t('tut_step7_desc') },
+    { title: t('tut_step8'), desc: t('tut_step8_desc') }
+  ];
+}
 
 function showTutorialStep(step) {
   tutorialStep = step;
   const tutContent = document.querySelector('.tutorial-content');
   if (!tutContent) return;
 
-  const stepData = TUTORIAL_STEPS[step] || TUTORIAL_STEPS[0];
-  tutContent.innerHTML = '<div style="text-align:center"><h2 style="color:#d4af37;margin-bottom:16px">' + stepData.title + '</h2><p style="color:#e2e8f0;margin-bottom:24px">' + stepData.desc + '</p><div style="color:#94a3b8;font-size:12px">' + (step + 1) + ' / 8</div></div>';
+  var steps = getTutorialSteps();
+  const stepData = steps[step] || steps[0];
+  var totalSteps = steps.length;
+
+  var icons = ['🎰', '🃏', '💰', '📋', '🏆', '👫', '🗺️', '💡'];
+  tutContent.innerHTML = '<div style="text-align:center;padding:8px 0;">' +
+    '<div style="font-size:48px;margin-bottom:12px;">' + (icons[step] || '🎰') + '</div>' +
+    '<h2 style="color:#d4af37;margin-bottom:12px;font-size:18px;">' + stepData.title + '</h2>' +
+    '<p style="color:#e2e8f0;margin-bottom:16px;font-size:14px;line-height:1.6;padding:0 8px;">' + stepData.desc + '</p>' +
+    '<div style="color:#94a3b8;font-size:12px;">' + (step + 1) + ' / ' + totalSteps + '</div></div>';
 
   const dots = document.getElementById('tutorial-dots');
   if (dots) {
     dots.innerHTML = '';
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < totalSteps; i++) {
       const dot = document.createElement('div');
       dot.style.cssText = 'width:8px;height:8px;background:' + (i === step ? '#d4af37' : '#3d2463') + ';border-radius:50%;display:inline-block;margin:0 4px';
       dots.appendChild(dot);
@@ -6241,14 +6314,35 @@ function setupListeners() {
         return;
       }
 
+      // Prevent duplicate creation
+      if (onlineState.roomCode) {
+        showToast('Already in a room', 2000);
+        return;
+      }
+
       Online.createRoom(title, wager).then(function(code) {
         if (!code) {
           showToast(t('create_room_failed'), 2000);
           return;
         }
-        showToast(t('room_created') + ' ' + code, 2000);
-        titleInput.value = '';
-        wagerInput.value = '1000';
+        // Auto-join the room as host
+        onlineState.roomCode = code;
+        onlineState.isHost = true;
+        Online.joinRoom(code).then(function() {
+          hideOverlay('room-panel');
+          titleInput.value = '';
+          wagerInput.value = '1000';
+          // Enter waiting room screen
+          showScreen('game');
+          gameState.mode = 'online';
+          gameState.selectedChip = CHIPS[0];
+          renderGameTable();
+          renderChips();
+          renderBetZones();
+          showToast('Room created! Waiting for players... (Code: ' + code + ')', 3000);
+        }).catch(function() {
+          showToast(t('create_room_failed'), 2000);
+        });
       });
       return;
     }
